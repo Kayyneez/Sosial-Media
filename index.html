@@ -1,82 +1,196 @@
-export default function LinkPage() { return ( <div className="min-h-screen bg-[#071421] flex items-center justify-center px-4 py-10"> <div className="w-full max-w-md bg-[#081826] rounded-[35px] border border-white/10 p-6 shadow-2xl text-center"> <img
-src="/profile.jpg"
-alt="profile"
-className="w-28 h-28 rounded-full mx-auto object-cover border-4 border-[#1e293b] shadow-xl"
-/>
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kayy Store</title>  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-<h1 className="text-white text-4xl font-bold mt-5">
-      @username
-    </h1>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(180deg, #06121d, #081826, #0b2236);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
 
-    <p className="text-zinc-400 mt-2 text-sm">
-      welcome to my social links ✨
-    </p>
+    .bg-glow {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      filter: blur(100px);
+      z-index: 0;
+      animation: float 6s infinite ease-in-out;
+    }
 
-    <div className="mt-8 flex flex-col gap-4">
-      <a
-        href="https://wa.me/6281234567890"
-        target="_blank"
-        className="flex items-center gap-4 bg-[#0b1f30] border border-zinc-600 rounded-full px-4 py-4 hover:scale-[1.02] transition-all duration-300"
-      >
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-          alt="wa"
-          className="w-14 h-14 rounded-full"
-        />
+    .glow1 {
+      background: #ff00aa;
+      top: -50px;
+      left: -50px;
+    }
 
-        <div className="text-left">
-          <h2 className="text-white font-bold text-lg">
-            REAL NO KAYY STORE
-          </h2>
-          <p className="text-zinc-400 text-sm">
-            Chat WhatsApp
-          </p>
-        </div>
-      </a>
+    .glow2 {
+      background: #00bfff;
+      bottom: -50px;
+      right: -50px;
+      animation-delay: 3s;
+    }
 
-      <a
-        href="https://instagram.com/usernameig"
-        target="_blank"
-        className="flex items-center gap-4 bg-[#0b1f30] border border-zinc-600 rounded-full px-4 py-4 hover:scale-[1.02] transition-all duration-300"
-      >
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
-          alt="ig"
-          className="w-14 h-14 rounded-full"
-        />
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(20px);
+      }
+      100% {
+        transform: translateY(0px);
+      }
+    }
 
-        <div className="text-left">
-          <h2 className="text-white font-bold text-lg">
-            REAL IG KAYY STORE
-          </h2>
-          <p className="text-zinc-400 text-sm">
-            Follow Instagram
-          </p>
-        </div>
-      </a>
+    .container {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 35px;
+      padding: 30px 20px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      animation: fadeIn 1s ease;
+      box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    }
 
-      <a
-        href="https://tiktok.com/@username"
-        target="_blank"
-        className="flex items-center gap-4 bg-[#0b1f30] border border-zinc-600 rounded-full px-4 py-4 hover:scale-[1.02] transition-all duration-300"
-      >
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/a/a9/TikTok_logo.svg"
-          alt="tt"
-          className="w-14 h-14 rounded-full bg-white p-2"
-        />
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        <div className="text-left">
-          <h2 className="text-white font-bold text-lg">
-            JB ALLGAME KAYY STORE
-          </h2>
-          <p className="text-zinc-400 text-sm">
-            Visit TikTok
-          </p>
-        </div>
-      </a>
-    </div>
+    .profile {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid white;
+      box-shadow: 0 0 25px rgba(255,255,255,0.3);
+      animation: pulse 3s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    h1 {
+      color: white;
+      margin-top: 18px;
+      font-size: 35px;
+    }
+
+    .desc {
+      color: #b3b3b3;
+      margin-top: 8px;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .link {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 999px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 18px;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+
+    .link:hover {
+      transform: scale(1.03);
+      background: rgba(255,255,255,0.1);
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+    }
+
+    .link img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: white;
+      padding: 6px;
+    }
+
+    .text {
+      text-align: left;
+    }
+
+    .text h2 {
+      color: white;
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+
+    .text p {
+      color: #bfbfbf;
+      font-size: 13px;
+    }
+  </style></head>
+<body>  <div class="bg-glow glow1"></div>
+  <div class="bg-glow glow2"></div>  <div class="container">
+    <img src="profile.jpg" class="profile" /><h1>@kayystore</h1>
+<p class="desc">welcome to my premium links ✨</p>
+
+<a class="link" href="https://wa.me/6281234567890" target="_blank">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+
+  <div class="text">
+    <h2>WhatsApp</h2>
+    <p>Chat me on WhatsApp</p>
   </div>
-</div>
+</a>
 
-) }
+<a class="link" href="https://instagram.com/usernameig" target="_blank">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png">
+
+  <div class="text">
+    <h2>Instagram</h2>
+    <p>Follow my Instagram</p>
+  </div>
+</a>
+
+<a class="link" href="https://tiktok.com/@username" target="_blank">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/TikTok_logo.svg">
+
+  <div class="text">
+    <h2>TikTok</h2>
+    <p>Watch my TikTok</p>
+  </div>
+</a>
+
+  </div></body>
+</html>

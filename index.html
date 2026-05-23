@@ -1,57 +1,6 @@
-<!DOCTYPE html><html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kayyne</title>  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      background: linear-gradient(180deg, #06121d, #081826, #0b2236);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      overflow-x: hidden;
-    }
-
-    .bg-glow {
-      position: fixed;
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      filter: blur(100px);
-      z-index: 0;
-      animation: float 6s infinite ease-in-out;
-    }
-
-    .glow1 {
-      background: #ff00aa;
-      top: -50px;
-      left: -50px;
-    }
-
-    .glow2 {
-      background: #00bfff;
-      bottom: -50px;
-      right: -50px;
-      animation-delay: 3s;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(0px);
-      }
-      50% {
-<!DOCTYPE html><html lang="id">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kayyne</title><style>
 
 *{
@@ -70,48 +19,6 @@ align-items:center;
 padding:20px;
 overflow:hidden;
 position:relative;
-}
-
-#loader{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#020b14;
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:9999;
-color:white;
-font-size:30px;
-animation:fadeOut 2s forwards;
-animation-delay:1.5s;
-}
-
-@keyframes fadeOut{
-to{
-opacity:0;
-visibility:hidden;
-}
-}
-
-.stars{
-position:fixed;
-width:100%;
-height:100%;
-background:url('https://i.ibb.co/9HB2sVt/stars.png');
-animation:moveStars 60s linear infinite;
-opacity:0.15;
-}
-
-@keyframes moveStars{
-from{
-transform:translateY(0);
-}
-to{
-transform:translateY(-1000px);
-}
 }
 
 .bg-glow{
@@ -154,14 +61,32 @@ width:100%;
 max-width:420px;
 background:rgba(255,255,255,0.05);
 backdrop-filter:blur(15px);
-border:1px solid rgba(255,255,255,0.1);
+border:2px solid transparent;
 border-radius:35px;
 padding:30px 20px;
 text-align:center;
 position:relative;
 z-index:1;
 box-shadow:0 0 40px rgba(0,0,0,0.5);
-animation:floating 4s ease-in-out infinite;
+animation:floating 4s ease-in-out infinite,rgbBorder 5s linear infinite;
+}
+
+@keyframes rgbBorder{
+0%{
+box-shadow:0 0 20px #ff0000;
+}
+25%{
+box-shadow:0 0 20px #00ff00;
+}
+50%{
+box-shadow:0 0 20px #00ffff;
+}
+75%{
+box-shadow:0 0 20px #ff00ff;
+}
+100%{
+box-shadow:0 0 20px #ff0000;
+}
 }
 
 @keyframes floating{
@@ -228,7 +153,7 @@ transition:0.3s ease;
 .link:hover{
 transform:scale(1.03);
 background:rgba(255,255,255,0.1);
-box-shadow:0 0 20px rgba(255,255,255,0.1);
+box-shadow:0 0 20px rgba(255,255,255,0.2);
 }
 
 .link img{
@@ -273,27 +198,46 @@ animation:fade 3s infinite;
 100%{opacity:0.4;}
 }
 
-</style></head><body><div id="loader">
-<h1>Loading...</h1>
-</div><div class="stars"></div><div class="bg-glow glow1"></div>
-<div class="bg-glow glow2"></div><div class="container"><img src="profile.jpg" class="profile" /><h1>@Kayyne</h1><p class="desc">
+</style>
+</head>
+  <body>
+    <audio autoplay loop>
+<source src="https://files.catbox.moe/8fadoa.mp3" type="audio/mpeg">
+</audio>
+    <div class="bg-glow glow1">
+      
+    </div>
+<div class="bg-glow glow2">
+  
+</div>
+    <div class="container">
+  <img src="profile.jpg" class="profile">
+      <h1>@Kayyne</h1><p class="desc">
 welcome to my social media ✨
-</p><a class="link" href="https://wa.me/6282241102321" target="_blank">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"><div class="text">
+</p>
+      <a class="link" href="https://wa.me/6282241102321" target="_blank">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+        <div class="text">
 <h2>WhatsApp</h2>
 <p>Chat me on WhatsApp</p>
 </div>
-</a><a class="link" href="https://instagram.com/too.dika" target="_blank">
-<img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"><div class="text">
+</a>
+      <a class="link" href="https://instagram.com/too.dika" target="_blank">
+<img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png">
+        <div class="text">
 <h2>Instagram</h2>
 <p>Follow my Instagram</p>
 </div>
-</a><a class="link" href="https://tiktok.com/@kayyneee" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png"><div class="text">
+</a>
+      <a class="link" href="https://tiktok.com/@kayyneee" target="_blank">
+<img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png">
+        <div class="text">
 <h2>TikTok</h2>
 <p>Watch my TikTok</p>
 </div>
 </a><p class="watermark">
 @Made By Kayyne
-</p></div></body>
+</p>
+    </div>
+  </body>
 </html>

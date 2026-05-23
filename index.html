@@ -8,7 +8,7 @@
 
 <style>
 
-/* ===== RESET ===== */
+/* ================= RESET ================= */
 *{
 margin:0;
 padding:0;
@@ -27,26 +27,64 @@ position:relative;
 background: radial-gradient(circle at top, #0b1a2a, #050a12 60%, #02050a);
 }
 
-/* ===== LOADER ===== */
+/* ================= LOADER ================= */
 #loader{
 position:fixed;
 inset:0;
-background:#020b14;
+background: radial-gradient(circle at center, #020b14, #000);
 display:flex;
 justify-content:center;
 align-items:center;
 z-index:9999;
+}
+
+#loader::before{
+content:"";
+position:absolute;
+width:200%;
+height:200%;
+background:
+radial-gradient(circle at 30% 30%, rgba(255,0,150,0.2), transparent 40%),
+radial-gradient(circle at 70% 60%, rgba(0,200,255,0.2), transparent 45%),
+radial-gradient(circle at 50% 50%, rgba(120,0,255,0.15), transparent 60%);
+filter:blur(60px);
+animation:loaderNebula 4s ease-in-out infinite alternate;
+}
+
+@keyframes loaderNebula{
+from{transform:scale(1);}
+to{transform:scale(1.2);}
+}
+
+.loader-content{
+text-align:center;
 color:white;
-font-size:30px;
-animation:fadeOut 2s forwards;
-animation-delay:1.5s;
+z-index:2;
+animation:fadePulse 2s infinite;
 }
 
-@keyframes fadeOut{
-to{opacity:0;visibility:hidden;}
+@keyframes fadePulse{
+0%{transform:scale(1);opacity:0.6;}
+50%{transform:scale(1.05);opacity:1;}
+100%{transform:scale(1);opacity:0.6;}
 }
 
-/* ===== GALAXY BACKGROUND ===== */
+.spinner{
+width:60px;
+height:60px;
+border-radius:50%;
+margin:0 auto 15px;
+border:3px solid rgba(255,255,255,0.2);
+border-top:3px solid #00ffff;
+border-right:3px solid #ff00ff;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+to{transform:rotate(360deg);}
+}
+
+/* ================= GALAXY ================= */
 .stars{
 position:fixed;
 inset:0;
@@ -62,11 +100,11 @@ width:200%;
 height:200%;
 background-repeat:repeat;
 background-image:
-radial-gradient(2px 2px at 20px 30px, #fff, transparent),
-radial-gradient(1px 1px at 80px 90px, #fff, transparent),
-radial-gradient(1.5px 1.5px at 130px 40px, #fff, transparent),
-radial-gradient(1px 1px at 200px 150px, #fff, transparent),
-radial-gradient(2px 2px at 300px 200px, #fff, transparent);
+radial-gradient(2px 2px at 20px 30px,#fff,transparent),
+radial-gradient(1px 1px at 80px 90px,#fff,transparent),
+radial-gradient(1.5px 1.5px at 130px 40px,#fff,transparent),
+radial-gradient(1px 1px at 200px 150px,#fff,transparent),
+radial-gradient(2px 2px at 300px 200px,#fff,transparent);
 background-size:300px 300px;
 animation:moveStars 120s linear infinite;
 opacity:0.35;
@@ -82,7 +120,7 @@ from{transform:translateY(0);}
 to{transform:translateY(-1200px);}
 }
 
-/* ===== NEBULA ===== */
+/* NEBULA */
 .nebula{
 position:fixed;
 inset:0;
@@ -100,7 +138,7 @@ from{transform:scale(1);}
 to{transform:scale(1.1);}
 }
 
-/* ===== SHOOTING STARS ===== */
+/* SHOOTING STARS */
 .shooting-stars{
 position:fixed;
 inset:0;
@@ -118,10 +156,8 @@ box-shadow:
 100px 200px white,
 300px 400px white,
 600px 100px white,
-900px 300px white,
-700px 500px white;
+900px 300px white;
 animation:shoot 7s linear infinite;
-opacity:0.8;
 }
 
 .shooting-stars::after{
@@ -141,7 +177,7 @@ opacity:0.5;
 100%{transform:translate(-600px,1000px);opacity:0;}
 }
 
-/* ===== BG GLOW ===== */
+/* GLOW */
 .bg-glow{
 position:fixed;
 width:300px;
@@ -152,18 +188,8 @@ z-index:0;
 animation:float 6s infinite ease-in-out;
 }
 
-.glow1{
-background:#ff00aa;
-top:-50px;
-left:-50px;
-}
-
-.glow2{
-background:#00bfff;
-bottom:-50px;
-right:-50px;
-animation-delay:3s;
-}
+.glow1{background:#ff00aa;top:-50px;left:-50px;}
+.glow2{background:#00bfff;bottom:-50px;right:-50px;animation-delay:3s;}
 
 @keyframes float{
 0%{transform:translateY(0);}
@@ -171,7 +197,7 @@ animation-delay:3s;
 100%{transform:translateY(0);}
 }
 
-/* ===== CONTAINER ===== */
+/* ================= UI ================= */
 .container{
 width:100%;
 max-width:420px;
@@ -182,8 +208,8 @@ padding:30px 20px;
 text-align:center;
 position:relative;
 z-index:1;
-box-shadow:0 0 40px rgba(0,0,0,0.5);
 animation:floating 4s ease-in-out infinite;
+box-shadow:0 0 40px rgba(0,0,0,0.5);
 }
 
 @keyframes floating{
@@ -192,53 +218,39 @@ animation:floating 4s ease-in-out infinite;
 100%{transform:translateY(0);}
 }
 
-/* ===== PROFILE ===== */
 .profile{
 width:120px;
 height:120px;
 border-radius:50%;
 object-fit:cover;
 border:4px solid white;
-box-shadow:0 0 25px rgba(255,255,255,0.3);
 }
 
-/* ===== TEXT ===== */
-h1{
-color:white;
-margin-top:18px;
-font-size:35px;
-}
+/* TEXT */
+h1{color:white;font-size:35px;margin-top:18px;}
+.desc{color:#bbb;margin:8px 0 20px;font-size:14px;}
 
-.desc{
-color:#b3b3b3;
-margin-top:8px;
-margin-bottom:20px;
-font-size:14px;
-}
-
-/* ===== BUTTON ===== */
+/* BUTTON */
 .music-btn{
-margin-bottom:20px;
 padding:10px 20px;
 border:none;
 border-radius:999px;
-background:white;
 cursor:pointer;
 font-weight:bold;
+margin-bottom:20px;
 }
 
-/* ===== LINK ===== */
+/* LINKS */
 .link{
-width:100%;
-background:rgba(255,255,255,0.06);
-border-radius:999px;
-padding:14px;
 display:flex;
 align-items:center;
 gap:15px;
+padding:14px;
 margin-bottom:18px;
+border-radius:999px;
+background:rgba(255,255,255,0.06);
 text-decoration:none;
-transition:0.3s;
+transition:.3s;
 }
 
 .link:hover{
@@ -250,18 +262,14 @@ background:rgba(255,255,255,0.1);
 width:60px;
 height:60px;
 border-radius:50%;
-object-fit:cover;
-padding:6px;
 }
 
-/* ===== WATERMARK ===== */
+/* WATERMARK */
 .watermark{
 margin-top:25px;
-font-size:14px;
 font-family:cursive;
 font-weight:bold;
 background:linear-gradient(90deg,#ff00ff,#00ffff,#fff,#ff00ff);
-background-size:300% 300%;
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 animation:rgbText 5s linear infinite;
@@ -273,7 +281,7 @@ animation:rgbText 5s linear infinite;
 100%{background-position:0% 50%;}
 }
 
-/* ===== METEOR FLASH ===== */
+/* ================= METEOR FLASH ================= */
 .meteor-flash{
 position:fixed;
 inset:0;
@@ -297,7 +305,6 @@ animation:meteorImpact .6s ease-out;
 100%{opacity:0;transform:scale(1.5);}
 }
 
-/* shake */
 @keyframes shake{
 0%{transform:translate(0,0);}
 25%{transform:translate(3px,-3px);}
@@ -311,17 +318,24 @@ animation:meteorImpact .6s ease-out;
 
 <body>
 
-<!-- EFFECTS -->
+<!-- BACKGROUND -->
 <div class="stars"></div>
 <div class="nebula"></div>
 <div class="shooting-stars"></div>
 <div class="bg-glow glow1"></div>
 <div class="bg-glow glow2"></div>
 
+<!-- METEOR FLASH -->
 <div class="meteor-flash" id="flash"></div>
 
 <!-- LOADER -->
-<div id="loader"><h1>Sabar Yahh...</h1></div>
+<div id="loader">
+  <div class="loader-content">
+    <div class="spinner"></div>
+    <h1>Initializing Space...</h1>
+    <p>loading galaxy system</p>
+  </div>
+</div>
 
 <audio id="music" loop>
 <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
@@ -342,7 +356,7 @@ animation:meteorImpact .6s ease-out;
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
 <div>
   <h2 style="color:white">WhatsApp</h2>
-  <p style="color:#bbb">Chat gua</p>
+  <p style="color:#bbb">Chat</p>
 </div>
 </a>
 
@@ -350,14 +364,16 @@ animation:meteorImpact .6s ease-out;
 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png">
 <div>
   <h2 style="color:white">Instagram</h2>
-  <p style="color:#bbb">Follow IG</p></div>
+  <p style="color:#bbb">Follow</p>
+</div>
 </a>
 
 <a class="link" href="https://tiktok.com/@kayyneee" target="_blank">
 <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png">
 <div>
   <h2 style="color:white">TikTok</h2>
-  <p style="color:#bbb">Follow TikTok</p></div>
+  <p style="color:#bbb">Follow</p>
+</div>
 </a>
 
 <p class="watermark">@Made By Kayyne</p>
@@ -366,10 +382,9 @@ animation:meteorImpact .6s ease-out;
 
 <script>
 
+/* METEOR CLICK EFFECT */
 function flashEffect(){
-
 const flash=document.getElementById("flash");
-
 flash.classList.add("meteor-active");
 
 document.body.style.animation="shake .3s";
@@ -378,11 +393,17 @@ setTimeout(()=>{
 flash.classList.remove("meteor-active");
 document.body.style.animation="";
 },600);
-
 }
 
-document.querySelectorAll(".link").forEach(link=>{
-link.addEventListener("click",flashEffect);
+document.querySelectorAll(".link").forEach(el=>{
+el.addEventListener("click",flashEffect);
+});
+
+/* AUTO HIDE LOADER */
+window.addEventListener("load",()=>{
+setTimeout(()=>{
+document.getElementById("loader").style.display="none";
+},1800);
 });
 
 </script>

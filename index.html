@@ -4,11 +4,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kayyne Space</title>
+<title>Kayyne Space Pro</title>
 
 <style>
 
-/* ================= BASE ================= */
+/* ================= RESET ================= */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
 body{
 height:100vh;
@@ -16,45 +16,39 @@ overflow:hidden;
 background:black;
 }
 
-/* ================= PERFORMANCE ================= */
+/* ================= SETTINGS ================= */
 :root{
---blur:40px;
+--blur:35px;
 --trail:1;
 }
 
-/* ================= CINEMATIC INTRO ================= */
+/* ================= INTRO ================= */
 #intro{
 position:fixed;
 inset:0;
 background:black;
-z-index:99999;
 display:flex;
 justify-content:center;
 align-items:center;
-flex-direction:column;
-animation:zoomOut 4s ease forwards;
+z-index:99999;
+animation:fadeIntro 3.5s ease forwards;
 }
 
 #intro h1{
 color:white;
-font-size:20px;
+font-size:18px;
 letter-spacing:3px;
-animation:glow 2s infinite;
+animation:blink 1.5s infinite;
 }
 
-@keyframes glow{
-0%{opacity:0.4;}
-50%{opacity:1;}
-100%{opacity:0.4;}
-}
+@keyframes blink{50%{opacity:.3;}}
 
-@keyframes zoomOut{
-0%{transform:scale(1.5);opacity:1;}
+@keyframes fadeIntro{
 80%{opacity:1;}
-100%{transform:scale(1);opacity:0;visibility:hidden;}
+100%{opacity:0;visibility:hidden;}
 }
 
-/* ================= SPACE BACKGROUND ================= */
+/* ================= SPACE ================= */
 .space{
 position:fixed;
 inset:0;
@@ -63,9 +57,15 @@ radial-gradient(circle at 20% 30%,#ff00aa33,transparent 40%),
 radial-gradient(circle at 70% 60%,#00ffff33,transparent 40%),
 radial-gradient(circle at 50% 50%,#6a00ff22,transparent 60%);
 filter:blur(var(--blur));
+animation:moveSpace 12s infinite alternate;
 }
 
-/* stars */
+@keyframes moveSpace{
+from{transform:scale(1);}
+to{transform:scale(1.1);}
+}
+
+/* STARS */
 .stars{
 position:fixed;
 inset:0;
@@ -74,11 +74,11 @@ radial-gradient(2px 2px at 20px 30px,#fff,transparent),
 radial-gradient(1px 1px at 80px 90px,#fff,transparent),
 radial-gradient(1px 1px at 130px 40px,#fff,transparent);
 background-size:300px 300px;
-animation:move 120s linear infinite;
+animation:moveStars 120s linear infinite;
 opacity:.3;
 }
 
-@keyframes move{
+@keyframes moveStars{
 to{transform:translateY(-1200px);}
 }
 
@@ -89,11 +89,11 @@ width:80px;
 height:80px;
 border-radius:50%;
 background:radial-gradient(circle,#00ffff,#003344);
+box-shadow:0 0 25px cyan;
 top:20%;
 left:10%;
-box-shadow:0 0 30px cyan;
-animation:orbit 18s linear infinite;
 cursor:pointer;
+animation:orbit 18s linear infinite;
 }
 
 @keyframes orbit{
@@ -106,43 +106,45 @@ cursor:pointer;
 
 /* ================= UI ================= */
 .container{
-position:relative;
-z-index:2;
 width:380px;
-margin:auto;
-top:50%;
-transform:translateY(-50%);
-text-align:center;
+padding:25px;
 background:rgba(255,255,255,0.05);
-backdrop-filter:blur(10px);
-padding:20px;
+backdrop-filter:blur(12px);
 border-radius:20px;
+text-align:center;
 color:white;
+z-index:2;
+animation:floating 5s infinite ease-in-out;
+position:relative;
+}
+
+@keyframes floating{
+50%{transform:translateY(-10px);}
 }
 
 .profile{
-width:100px;
-height:100px;
-border-radius:50%;
-border:3px solid white;
+width:100px;height:100px;border-radius:50%;border:3px solid white;
 }
 
 /* ================= LINKS ================= */
 .link{
 display:flex;
 align-items:center;
+justify-content:center;
 gap:10px;
-padding:12px;
+padding:14px;
 margin:10px 0;
-border-radius:50px;
+border-radius:999px;
 background:rgba(255,255,255,0.08);
-cursor:pointer;
+color:white;
+text-decoration:none;
 transition:.3s;
+cursor:pointer;
 }
 
 .link:hover{
 transform:scale(1.05);
-background:rgba(255,255,255,0.15);
+background:rgba(0,255,255,0.15);
 }
 
 /* ================= CURSOR TRAIL ================= */
@@ -150,8 +152,8 @@ background:rgba(255,255,255,0.15);
 position:fixed;
 width:6px;
 height:6px;
-background:white;
 border-radius:50%;
+background:white;
 pointer-events:none;
 animation:fade .7s forwards;
 }
@@ -170,27 +172,45 @@ pointer-events:none;
 z-index:9999;
 }
 
-.meteor.active{
-animation:boom .5s ease;
-}
+.meteor.active{animation:boom .5s ease;}
 
 @keyframes boom{
-0%{opacity:0;}
 50%{opacity:1;}
 100%{opacity:0;}
 }
 
-/* ================= SOUND BUTTON ================= */
-.sound-btn{
+/* ================= SETTINGS ================= */
+.settings{
 position:fixed;
 bottom:20px;
-right:20px;
+left:20px;
 z-index:999;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(10px);
 padding:10px;
 border-radius:10px;
-border:none;
-cursor:pointer;
+color:white;
+font-size:12px;
 }
+
+button{
+cursor:pointer;
+margin:3px;
+}
+
+/* ================= WATERMARK ================= */
+.watermark{
+margin-top:15px;
+font-size:13px;
+font-family:cursive;
+background:linear-gradient(90deg,#ff00ff,#00ffff,#fff,#ff00ff);
+background-size:300% 300%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:wm 4s linear infinite;
+}
+
+@keyframes wm{50%{background-position:100%;}}
 
 </style>
 </head>
@@ -198,21 +218,15 @@ cursor:pointer;
 <body>
 
 <!-- INTRO -->
-<div id="intro">
-<h1>INITIALIZING SPACE SYSTEM🤖...</h1>
-</div>
+<div id="intro"><h1>INITIALIZING SPACE🤖...</h1></div>
 
+<!-- BACKGROUND -->
 <div class="space"></div>
 <div class="stars"></div>
 <div class="planet" id="planet"></div>
-
 <div class="meteor" id="meteor"></div>
 
-<!-- MUSIC -->
-<audio id="music" loop>
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
-</audio>
-
+<!-- UI -->
 <div class="container">
 
 <img src="profile.jpg" class="profile">
@@ -220,49 +234,83 @@ cursor:pointer;
 <h2>@Kayyne</h2>
 <p>Welcome To My Medsos✨</p>
 
-<div class="link">WhatsApp</div>
-<div class="link">Instagram</div>
-<div class="link">TikTok</div>
+<a class="link" href="https://wa.me/6282241102321" target="_blank">📱 WhatsApp</a>
+<a class="link" href="https://instagram.com/@too.dikaa" target="_blank">📸 Instagram</a>
+<a class="link" href="https://tiktok.com/@kayyneee" target="_blank">🎵 TikTok</a>
+
+<p class="watermark">@Made by Kayyne</p>
 
 </div>
 
-<button class="sound-btn" onclick="toggleMusic()">🎵</button>
+<!-- SETTINGS -->
+<div class="settings">
+<button onclick="toggleMusic()">🎵</button>
+<button onclick="toggleMode()">⚙️</button>
+</div>
+
+<!-- MUSIC -->
+<audio id="music" loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+</audio>
 
 <script>
 
-/* ================= MUSIC ================= */
+/* MUSIC */
 let music=document.getElementById("music");
 let play=false;
 
 function toggleMusic(){
-if(play){music.pause();play=false;}
-else{music.play();play=true;}
+play=!play;
+play?music.play():music.pause();
 }
 
-/* ================= CURSOR TRAIL ================= */
+/* CURSOR TRAIL (OPTIMIZED) */
+let count=0;
 document.addEventListener("mousemove",(e)=>{
+if(count++>60) return;
+
 const t=document.createElement("div");
 t.className="trail";
 t.style.left=e.clientX+"px";
 t.style.top=e.clientY+"px";
 document.body.appendChild(t);
+
 setTimeout(()=>t.remove(),700);
 });
 
-/* ================= METEOR CLICK ================= */
+/* RANDOM METEOR */
+setInterval(()=>{
+let m=document.getElementById("meteor");
+m.classList.add("active");
+setTimeout(()=>m.classList.remove("active"),500);
+},8000);
+
+/* CLICK METEOR */
 document.querySelectorAll(".link").forEach(el=>{
 el.addEventListener("click",()=>{
-document.getElementById("meteor").classList.add("active");
-setTimeout(()=>meteor.classList.remove("active"),500);
+let m=document.getElementById("meteor");
+m.classList.add("active");
+setTimeout(()=>m.classList.remove("active"),500);
 });
 });
 
-/* ================= PLANET CLICK ================= */
+/* PLANET */
 document.getElementById("planet").onclick=()=>{
-alert("Planet Space Activated 🚀");
+alert("🌌 Planet Activated: Kayyne Universe");
 };
 
-/* ================= INTRO REMOVE ================= */
+/* SETTINGS MODE */
+function toggleMode(){
+if(getComputedStyle(document.documentElement).getPropertyValue('--blur')=='35px'){
+document.documentElement.style.setProperty('--blur','15px');
+alert("LOW MODE ON");
+}else{
+document.documentElement.style.setProperty('--blur','35px');
+alert("ULTRA MODE ON");
+}
+}
+
+/* INTRO */
 setTimeout(()=>{
 document.getElementById("intro").style.display="none";
 },3500);

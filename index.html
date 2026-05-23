@@ -4,49 +4,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kayyne Space Pro</title>
+<title>Kaynne</title>
 
 <style>
 
 /* ================= RESET ================= */
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
 body{
 height:100vh;
 overflow:hidden;
 background:black;
+transition:.5s;
 }
 
-/* ================= SETTINGS ================= */
-:root{
+/* ================= MODE ================= */
+body.low{
+--blur:10px;
+}
+
+body.ultra{
 --blur:35px;
---trail:1;
 }
 
-/* ================= INTRO ================= */
+/* ================= PORTAL LOADER ================= */
 #intro{
 position:fixed;
 inset:0;
 background:black;
 display:flex;
+flex-direction:column;
 justify-content:center;
 align-items:center;
 z-index:99999;
-animation:fadeIntro 3.5s ease forwards;
 }
 
-#intro h1{
-color:white;
-font-size:18px;
-letter-spacing:3px;
-animation:blink 1.5s infinite;
+.portal{
+width:120px;
+height:120px;
+position:relative;
+margin-bottom:20px;
 }
 
-@keyframes blink{50%{opacity:.3;}}
-
-@keyframes fadeIntro{
-80%{opacity:1;}
-100%{opacity:0;visibility:hidden;}
+.ring{
+position:absolute;
+inset:0;
+border-radius:50%;
+border:2px solid rgba(0,255,255,0.4);
+animation:spin 1.5s linear infinite;
 }
+
+.ring:nth-child(2){border-color:rgba(255,0,255,0.4);animation-duration:2.2s;}
+.ring:nth-child(3){border-color:rgba(255,255,255,0.2);animation-duration:3s;}
+
+.core{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:18px;
+height:18px;
+background:cyan;
+border-radius:50%;
+box-shadow:0 0 20px cyan;
+}
+
+@keyframes spin{to{transform:rotate(360deg);}}
 
 /* ================= SPACE ================= */
 .space{
@@ -56,14 +84,11 @@ background:
 radial-gradient(circle at 20% 30%,#ff00aa33,transparent 40%),
 radial-gradient(circle at 70% 60%,#00ffff33,transparent 40%),
 radial-gradient(circle at 50% 50%,#6a00ff22,transparent 60%);
-filter:blur(var(--blur));
-animation:moveSpace 12s infinite alternate;
+filter:blur(var(--blur,25px));
+animation:move 12s infinite alternate;
 }
 
-@keyframes moveSpace{
-from{transform:scale(1);}
-to{transform:scale(1.1);}
-}
+@keyframes move{to{transform:scale(1.1);}}
 
 /* STARS */
 .stars{
@@ -74,13 +99,13 @@ radial-gradient(2px 2px at 20px 30px,#fff,transparent),
 radial-gradient(1px 1px at 80px 90px,#fff,transparent),
 radial-gradient(1px 1px at 130px 40px,#fff,transparent);
 background-size:300px 300px;
-animation:moveStars 120s linear infinite;
-opacity:.3;
+animation:stars 120s linear infinite;
 }
 
-@keyframes moveStars{
-to{transform:translateY(-1200px);}
-}
+body.low .stars{opacity:.1;animation:none;}
+body.ultra .stars{opacity:.35;}
+
+@keyframes stars{to{transform:translateY(-1200px);}}
 
 /* ================= PLANET ================= */
 .planet{
@@ -90,11 +115,13 @@ height:80px;
 border-radius:50%;
 background:radial-gradient(circle,#00ffff,#003344);
 box-shadow:0 0 25px cyan;
-top:20%;
+top:15%;
 left:10%;
 cursor:pointer;
-animation:orbit 18s linear infinite;
 }
+
+body.ultra .planet{animation:orbit 18s linear infinite;}
+body.low .planet{animation:none;}
 
 @keyframes orbit{
 0%{transform:translate(0,0);}
@@ -110,7 +137,7 @@ width:380px;
 padding:25px;
 background:rgba(255,255,255,0.05);
 backdrop-filter:blur(12px);
-border-radius:20px;
+border-radius:25px;
 text-align:center;
 color:white;
 z-index:2;
@@ -118,12 +145,15 @@ animation:floating 5s infinite ease-in-out;
 position:relative;
 }
 
-@keyframes floating{
-50%{transform:translateY(-10px);}
-}
+@keyframes floating{50%{transform:translateY(-10px);}}
 
+/* ================= PROFILE ================= */
 .profile{
-width:100px;height:100px;border-radius:50%;border:3px solid white;
+width:100px;
+height:100px;
+border-radius:50%;
+border:3px solid white;
+cursor:pointer;
 }
 
 /* ================= LINKS ================= */
@@ -131,7 +161,6 @@ width:100px;height:100px;border-radius:50%;border:3px solid white;
 display:flex;
 align-items:center;
 justify-content:center;
-gap:10px;
 padding:14px;
 margin:10px 0;
 border-radius:999px;
@@ -139,7 +168,6 @@ background:rgba(255,255,255,0.08);
 color:white;
 text-decoration:none;
 transition:.3s;
-cursor:pointer;
 }
 
 .link:hover{
@@ -147,7 +175,7 @@ transform:scale(1.05);
 background:rgba(0,255,255,0.15);
 }
 
-/* ================= CURSOR TRAIL ================= */
+/* ================= TRAIL ================= */
 .trail{
 position:fixed;
 width:6px;
@@ -158,9 +186,9 @@ pointer-events:none;
 animation:fade .7s forwards;
 }
 
-@keyframes fade{
-to{opacity:0;transform:scale(0);}
-}
+body.low .trail{display:none;}
+
+@keyframes fade{to{opacity:0;transform:scale(0);}}
 
 /* ================= METEOR ================= */
 .meteor{
@@ -179,23 +207,16 @@ z-index:9999;
 100%{opacity:0;}
 }
 
-/* ================= SETTINGS ================= */
-.settings{
+/* ================= BUTTON ================= */
+.toggle{
 position:fixed;
 bottom:20px;
 left:20px;
 z-index:999;
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(10px);
 padding:10px;
+border:none;
 border-radius:10px;
-color:white;
-font-size:12px;
-}
-
-button{
 cursor:pointer;
-margin:3px;
 }
 
 /* ================= WATERMARK ================= */
@@ -208,6 +229,7 @@ background-size:300% 300%;
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 animation:wm 4s linear infinite;
+cursor:pointer;
 }
 
 @keyframes wm{50%{background-position:100%;}}
@@ -215,15 +237,24 @@ animation:wm 4s linear infinite;
 </style>
 </head>
 
-<body>
+<body class="ultra">
 
-<!-- INTRO -->
-<div id="intro"><h1>INITIALIZING SPACE🤖...</h1></div>
+<!-- LOADER -->
+<div id="intro">
+<div class="portal">
+<div class="ring"></div>
+<div class="ring"></div>
+<div class="ring"></div>
+<div class="core"></div>
+</div>
+</div>
 
 <!-- BACKGROUND -->
 <div class="space"></div>
 <div class="stars"></div>
 <div class="planet" id="planet"></div>
+
+<!-- METEOR -->
 <div class="meteor" id="meteor"></div>
 
 <!-- UI -->
@@ -231,61 +262,60 @@ animation:wm 4s linear infinite;
 
 <img src="profile.jpg" class="profile">
 
-<h2>@Kayyne</h2>
+<h2>@Kaynne</h2>
 <p>Welcome To My Medsos✨</p>
 
-<a class="link" href="https://wa.me/6282241102321" target="_blank">📱 WhatsApp</a>
-<a class="link" href="https://instagram.com/@too.dikaa" target="_blank">📸 Instagram</a>
-<a class="link" href="https://tiktok.com/@kayyneee" target="_blank">🎵 TikTok</a>
+<a class="link" href="https://wa.me/6282241102321" target="_blank">📱 My Wangsaf</a>
+<a class="link" href="https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv" target="_blank">📸 My Instagram</a>
+<a class="link" href="https://tiktok.com/@kayyneee" target="_blank">🎵 My TikTok</a>
 
-<p class="watermark">@Made by Kayyne</p>
+<p class="watermark">@Made by Kaynne</p>
 
 </div>
 
-<!-- SETTINGS -->
-<div class="settings">
-<button onclick="toggleMusic()">🎵</button>
-<button onclick="toggleMode()">⚙️</button>
-</div>
-
-<!-- MUSIC -->
-<audio id="music" loop>
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
-</audio>
+<!-- TOGGLE -->
+<button class="toggle" onclick="toggleMode()">⚡ / 🚀</button>
 
 <script>
 
-/* MUSIC */
-let music=document.getElementById("music");
-let play=false;
+/* ================= MODE SYSTEM ================= */
+function toggleMode(){
 
-function toggleMusic(){
-play=!play;
-play?music.play():music.pause();
+if(document.body.classList.contains("ultra")){
+document.body.classList.remove("ultra");
+document.body.classList.add("low");
+alert("⚡ LOW MODE ON");
+}else{
+document.body.classList.remove("low");
+document.body.classList.add("ultra");
+alert("🚀 ULTRA MODE ON");
 }
 
-/* CURSOR TRAIL (OPTIMIZED) */
-let count=0;
+}
+
+/* ================= CURSOR TRAIL ================= */
 document.addEventListener("mousemove",(e)=>{
-if(count++>60) return;
+if(document.body.classList.contains("low")) return;
 
 const t=document.createElement("div");
 t.className="trail";
 t.style.left=e.clientX+"px";
 t.style.top=e.clientY+"px";
 document.body.appendChild(t);
-
 setTimeout(()=>t.remove(),700);
 });
 
-/* RANDOM METEOR */
+/* ================= RANDOM METEOR (ULTRA ONLY) ================= */
 setInterval(()=>{
+if(!document.body.classList.contains("ultra")) return;
+
 let m=document.getElementById("meteor");
 m.classList.add("active");
 setTimeout(()=>m.classList.remove("active"),500);
-},8000);
 
-/* CLICK METEOR */
+},6000);
+
+/* ================= CLICK EFFECT ================= */
 document.querySelectorAll(".link").forEach(el=>{
 el.addEventListener("click",()=>{
 let m=document.getElementById("meteor");
@@ -294,23 +324,37 @@ setTimeout(()=>m.classList.remove("active"),500);
 });
 });
 
-/* PLANET */
+/* ================= PLANET ================= */
 document.getElementById("planet").onclick=()=>{
-alert("🌌 Planet Activated: Kayyne Universe");
+alert("🌌 Planet System Active");
 };
 
-/* SETTINGS MODE */
-function toggleMode(){
-if(getComputedStyle(document.documentElement).getPropertyValue('--blur')=='35px'){
-document.documentElement.style.setProperty('--blur','15px');
-alert("LOW MODE ON");
-}else{
-document.documentElement.style.setProperty('--blur','35px');
-alert("ULTRA MODE ON");
-}
-}
+/* ================= EASTER EGG ================= */
+let pc=0,bc=0;
 
-/* INTRO */
+document.querySelector(".profile").addEventListener("click",()=>{
+pc++;
+if(pc===5){
+alert("🥚 GOD MODE UNLOCKED");
+document.body.style.filter="contrast(1.3) brightness(1.2)";
+}
+});
+
+document.body.addEventListener("click",(e)=>{
+if(e.target.classList.contains("link")) return;
+
+bc++;
+if(bc===10){
+alert("🌌 GALAXY GLITCH MODE");
+document.body.style.filter="hue-rotate(180deg) saturate(2)";
+}
+});
+
+document.querySelector(".watermark").addEventListener("click",()=>{
+alert("👑 Hidden Creator Message Unlocked");
+});
+
+/* ================= INTRO REMOVE ================= */
 setTimeout(()=>{
 document.getElementById("intro").style.display="none";
 },3500);

@@ -192,10 +192,30 @@ background:white;
 cursor:pointer;
 font-weight:bold;
 transition:0.3s;
+position:relative;
+overflow:hidden;
 }
 
 .music-btn:hover{
 transform:scale(1.05);
+}
+
+.music-btn::after{
+content:"";
+position:absolute;
+width:300px;
+height:300px;
+background:rgba(255,255,255,.25);
+top:50%;
+left:50%;
+transform:translate(-50%,-50%) scale(0);
+border-radius:50%;
+transition:.6s;
+}
+
+.music-btn:active::after{
+transform:translate(-50%,-50%) scale(1);
+opacity:0;
 }
 
 .link{
@@ -272,7 +292,7 @@ background-position:0% 50%;
 }
 }
 
-.lightning{
+.flash-screen{
 position:fixed;
 top:0;
 left:0;
@@ -281,19 +301,19 @@ height:100%;
 background:white;
 opacity:0;
 pointer-events:none;
-z-index:99999;
+z-index:999999;
 }
 
-.flash{
-animation:flash 0.3s;
+.flash-active{
+animation:lightning .25s;
 }
 
-@keyframes flash{
+@keyframes lightning{
 0%{
 opacity:0;
 }
 50%{
-opacity:0.8;
+opacity:.9;
 }
 100%{
 opacity:0;
@@ -305,7 +325,7 @@ opacity:0;
 
 <body>
 
-<div class="lightning" id="lightning"></div>
+<div class="flash-screen" id="flash"></div>
 
 <div id="loader">
 <h1>Loading...</h1>
@@ -314,7 +334,7 @@ opacity:0;
 <div class="stars"></div>
 
 <audio id="music" loop>
-<source src="https://files.catbox.moe/8fadoa.mp3" type="audio/mpeg">
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=ambient-piano-logo-165357.mp3" type="audio/mpeg">
 </audio>
 
 <div class="bg-glow glow1"></div>
@@ -334,7 +354,7 @@ welcome to my social media ✨
 🎵 Play Music
 </button>
 
-<a class="link" onclick="flashEffect()" href="https://wa.me/6282241102321" target="_blank">
+<a class="link" href="https://wa.me/6282241102321" target="_blank">
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
 
 <div class="text">
@@ -343,7 +363,7 @@ welcome to my social media ✨
 </div>
 </a>
 
-<a class="link" onclick="flashEffect()" href="https://instagram.com/@too.dika" target="_blank">
+<a class="link" href="https://instagram.com/too.dika" target="_blank">
 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png">
 
 <div class="text">
@@ -352,7 +372,7 @@ welcome to my social media ✨
 </div>
 </a>
 
-<a class="link" onclick="flashEffect()" href="https://tiktok.com/@kayyneee" target="_blank">
+<a class="link" href="https://tiktok.com/@kayyneee" target="_blank">
 <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png">
 
 <div class="text">
@@ -370,14 +390,22 @@ welcome to my social media ✨
 <script>
 
 function flashEffect(){
-const flash=document.getElementById("lightning");
 
-flash.classList.add("flash");
+const flash=document.getElementById("flash");
+
+flash.classList.add("flash-active");
 
 setTimeout(()=>{
-flash.classList.remove("flash");
-},300);
+flash.classList.remove("flash-active");
+},250);
+
 }
+
+document.querySelectorAll(".link").forEach(link=>{
+
+link.addEventListener("click",flashEffect);
+
+});
 
 </script>
 

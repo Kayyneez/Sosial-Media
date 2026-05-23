@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kaynne ORIGIN OS 6 </title>
+<title>Kaynne ORIGIN OS 6</title>
 
 <style>
 
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
 body{height:100vh;overflow:hidden;background:black;transition:.4s;}
 
-/* MODES */
-body.low{--blur:10px;}
-body.ultra{--blur:30px;}
+/* MODE FIX */
+body.low{filter:brightness(.7) contrast(.9);}
+body.ultra{filter:brightness(1.1) contrast(1.2);}
 
 /* SPACE */
 .space{
@@ -21,7 +21,7 @@ background:
 radial-gradient(circle at 20% 30%,#ff00aa33,transparent 40%),
 radial-gradient(circle at 70% 60%,#00ffff33,transparent 40%),
 radial-gradient(circle at 50% 50%,#6a00ff22,transparent 60%);
-filter:blur(var(--blur,25px));
+filter:blur(25px);
 animation:move 10s infinite alternate;
 }
 @keyframes move{to{transform:scale(1.1);}}
@@ -31,29 +31,17 @@ animation:move 10s infinite alternate;
 position:fixed;inset:0;
 background:radial-gradient(2px 2px at 20px 30px,#fff,transparent);
 background-size:300px 300px;
-animation:stars 120s linear infinite;
+animation:stars 100s linear infinite;
 opacity:.35;
 }
-body.low .stars{opacity:.1;animation:none;}
 @keyframes stars{to{transform:translateY(-1200px);}}
-
-/* PLANET */
-.planet{
-position:fixed;
-width:80px;height:80px;
-border-radius:50%;
-background:radial-gradient(circle,#00ffff,#003344);
-box-shadow:0 0 25px cyan;
-top:15%;left:10%;
-cursor:pointer;
-}
 
 /* UI */
 .container{
 position:absolute;
 top:50%;left:50%;
 transform:translate(-50%,-50%);
-width:340px;
+width:320px;
 padding:20px;
 text-align:center;
 color:white;
@@ -71,9 +59,7 @@ border:3px solid cyan;
 box-shadow:0 0 20px cyan;
 cursor:pointer;
 margin-bottom:10px;
-transition:.3s;
 }
-.profile:hover{transform:scale(1.1);}
 
 /* LINKS */
 .link{
@@ -84,9 +70,7 @@ border-radius:999px;
 background:rgba(255,255,255,0.08);
 color:white;
 text-decoration:none;
-transition:.3s;
 }
-.link:hover{transform:scale(1.05);background:rgba(0,255,255,0.2);}
 
 /* METEOR */
 .meteor{
@@ -103,48 +87,18 @@ pointer-events:none;
 position:fixed;inset:0;
 background:black;
 display:flex;
+justify-content:center;
+align-items:center;
 flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:99999;
-overflow:hidden;
-}
-
-.warp{
-position:absolute;
-width:100%;
-height:100%;
-display:flex;
-justify-content:center;
-align-items:center;
-animation:warp 3.5s ease forwards;
-}
-
-@keyframes warp{
-0%{transform:scale(1) rotate(0);}
-70%{transform:scale(1.4) rotate(180deg);}
-100%{transform:scale(2.5) rotate(360deg);opacity:0;}
+z-index:9999;
 }
 
 .portal{
-width:140px;height:140px;
-position:relative;
-}
-.ring{
-position:absolute;inset:0;
+width:120px;height:120px;
 border-radius:50%;
 border:2px solid cyan;
-animation:spin 1.2s linear infinite;
-}
-.ring:nth-child(2){border-color:magenta;}
-.ring:nth-child(3){border-color:white;}
-.core{
-position:absolute;top:50%;left:50%;
-transform:translate(-50%,-50%);
-width:18px;height:18px;
-background:cyan;
-border-radius:50%;
-box-shadow:0 0 20px cyan;
+border-top:2px solid magenta;
+animation:spin 1s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg);}}
 
@@ -153,7 +107,7 @@ box-shadow:0 0 20px cyan;
 position:fixed;
 bottom:80px;
 left:20px;
-background:rgba(0,0,0,0.75);
+background:rgba(0,0,0,.8);
 color:#0ff;
 padding:10px;
 border-radius:10px;
@@ -164,27 +118,26 @@ width:240px;
 
 #cmdInput{
 width:100%;
-margin-top:6px;
+margin-top:5px;
 padding:6px;
+background:black;
+color:#0ff;
 border:none;
 outline:none;
 border-radius:6px;
-background:black;
-color:#0ff;
 }
 
 /* BUTTONS */
-.toggle,.soundBtn{
+button{
 position:fixed;
 bottom:20px;
 padding:10px;
 border:none;
 border-radius:10px;
 cursor:pointer;
-z-index:999;
 }
-.toggle{left:20px;}
-.soundBtn{right:20px;}
+#modeBtn{left:20px;}
+#soundBtn{right:20px;}
 
 </style>
 </head>
@@ -193,22 +146,14 @@ z-index:999;
 
 <!-- LOADER -->
 <div id="intro">
-  <div class="warp">
-    <div class="portal">
-      <div class="ring"></div>
-      <div class="ring"></div>
-      <div class="ring"></div>
-      <div class="core"></div>
-    </div>
-  </div>
-  <h1 style="color:white;font-size:14px;">ENTERING GALAXY...</h1>
+<div class="portal"></div>
+<h3 style="color:white;margin-top:15px;">ENTERING GALAXY...</h3>
 </div>
 
 <div class="space"></div>
 <div class="stars"></div>
 <div class="meteor" id="meteor"></div>
 
-<!-- UI -->
 <div class="container">
 
 <img src="profile.jpg" class="profile" id="profile">
@@ -223,50 +168,59 @@ z-index:999;
 
 <!-- CMD -->
 <div id="cmd">
-<div id="cmdLog">GALAXY CMD READY</div>
-<input id="cmdInput" placeholder="type /help">
+<div id="cmdLog">CMD READY</div>
+<input id="cmdInput" placeholder="/help">
 </div>
 
-<!-- BUTTONS -->
-<button class="toggle" onclick="toggleMode()">⚡ / 🚀</button>
-<button class="soundBtn" onclick="toggleSound()">🔊 SOUND</button>
+<button id="modeBtn" onclick="toggleMode()">MODE</button>
+<button id="soundBtn" onclick="toggleSound()">SOUND</button>
 
 <script>
 
-/* ================= AUDIO ================= */
+/* ================= AUDIO FIX TOTAL ================= */
 const AudioEngine={
 ctx:new (window.AudioContext||window.webkitAudioContext)(),
 master:null,
 ambient:null,
 enabled:true,
+unlocked:false,
 
 init(){
 this.master=this.ctx.createGain();
-this.master.gain.value=0.08;
+this.master.gain.value=0.3;
 this.master.connect(this.ctx.destination);
 },
 
-beep(type){
+unlock(){
+if(this.unlocked) return;
+this.ctx.resume();
+this.startAmbient();
+this.unlocked=true;
+},
 
+beep(type){
 if(!this.enabled) return;
 
-let f=400;
-if(type==="click")f=600;
-if(type==="meteor")f=90;
-if(type==="unlock")f=900;
+let f=440;
+if(type==="click")f=700;
+if(type==="meteor")f=120;
+if(type==="unlock")f=1000;
 
 const o=this.ctx.createOscillator();
 const g=this.ctx.createGain();
 
 o.type="sine";
 o.frequency.value=f;
-g.gain.value=0.1;
+g.gain.value=0.3;
 
 o.connect(g);
 g.connect(this.master);
 
+g.gain.setValueAtTime(0.3,this.ctx.currentTime);
+g.gain.exponentialRampToValueAtTime(0.001,this.ctx.currentTime+0.2);
+
 o.start();
-o.stop(this.ctx.currentTime+0.15);
+o.stop(this.ctx.currentTime+0.2);
 },
 
 startAmbient(){
@@ -277,7 +231,7 @@ const g=this.ctx.createGain();
 
 o.type="sine";
 o.frequency.value=55;
-g.gain.value=0.03;
+g.gain.value=0.05;
 
 o.connect(g);
 g.connect(this.master);
@@ -297,42 +251,43 @@ toggle(){
 this.enabled=!this.enabled;
 if(!this.enabled){
 this.stopAmbient();
-alert("SOUND OFF");
 }else{
 this.startAmbient();
-alert("SOUND ON");
 }
+alert(this.enabled?"SOUND ON":"SOUND OFF");
 }
 };
 
 AudioEngine.init();
 
-/* UNLOCK AUDIO */
-document.body.addEventListener("click",()=>{
-AudioEngine.ctx.resume();
-AudioEngine.startAmbient();
-},{once:true});
+/* ================= FIX SOUND UNLOCK ================= */
+document.body.addEventListener("click",()=>AudioEngine.unlock(),{once:true});
 
-/* MODE */
+/* ================= MODE FIX ================= */
 function toggleMode(){
 if(document.body.classList.contains("ultra")){
 document.body.classList.remove("ultra");
 document.body.classList.add("low");
 AudioEngine.stopAmbient();
+clearInterval(window.meteorLoop);
 }else{
 document.body.classList.add("ultra");
 document.body.classList.remove("low");
 AudioEngine.startAmbient();
+startMeteor();
 }
 }
 
-/* SOUND */
+/* ================= SOUND ================= */
 function toggleSound(){
 AudioEngine.toggle();
 }
 
-/* METEOR */
-setInterval(()=>{
+/* ================= METEOR FIX ================= */
+function startMeteor(){
+clearInterval(window.meteorLoop);
+
+window.meteorLoop=setInterval(()=>{
 if(!document.body.classList.contains("ultra")) return;
 
 AudioEngine.beep("meteor");
@@ -341,95 +296,83 @@ let m=document.getElementById("meteor");
 m.classList.add("active");
 setTimeout(()=>m.classList.remove("active"),400);
 
-},5000);
-
-/* LINKS SOUND */
-document.querySelectorAll(".link").forEach(el=>{
-el.addEventListener("click",()=>AudioEngine.beep("click"));
-});
-
-/* PROFILE EGG */
-let p=0;
-document.getElementById("profile").onclick=()=>{
-p++;
-if(p===5){
-AudioEngine.beep("unlock");
-document.body.style.filter="hue-rotate(180deg)";
-alert("PROFILE GOD MODE");
+},4000);
 }
-};
 
-/* CMD SYSTEM */
-const cmdBox=document.getElementById("cmd");
-const cmdInput=document.getElementById("cmdInput");
-const cmdLog=document.getElementById("cmdLog");
-
+/* ================= CMD ================= */
 let cmdOpen=false;
+const cmd=document.getElementById("cmd");
+const input=document.getElementById("cmdInput");
+const log=document.getElementById("cmdLog");
 
 document.addEventListener("keydown",(e)=>{
 if(e.key==="c"){
 cmdOpen=!cmdOpen;
-cmdBox.style.display=cmdOpen?"block":"none";
-if(cmdOpen) cmdInput.focus();
+cmd.style.display=cmdOpen?"block":"none";
+if(cmdOpen) input.focus();
 }
 });
 
-function log(t){cmdLog.innerHTML=t;}
-
-cmdInput.addEventListener("keydown",(e)=>{
+input.addEventListener("keydown",(e)=>{
 if(e.key!=="Enter") return;
 
-let v=cmdInput.value.toLowerCase();
-cmdInput.value="";
+let v=input.value.toLowerCase();
+input.value="";
 
-if(v==="/help") log("/ultra /low /sound /meteor /god /clear");
+if(v==="/help") log.innerText="/ultra /low /sound /meteor /god";
 
 else if(v==="/ultra"){
 document.body.classList.add("ultra");
 document.body.classList.remove("low");
 AudioEngine.startAmbient();
-log("ULTRA MODE");
+startMeteor();
+log.innerText="ULTRA MODE";
 }
 
 else if(v==="/low"){
 document.body.classList.add("low");
 document.body.classList.remove("ultra");
 AudioEngine.stopAmbient();
-log("LOW MODE");
+log.innerText="LOW MODE";
 }
 
 else if(v==="/sound"){
 AudioEngine.toggle();
-log("SOUND TOGGLE");
+log.innerText="SOUND TOGGLE";
 }
 
 else if(v==="/meteor"){
-log("METEOR STORM");
 AudioEngine.beep("meteor");
-setTimeout(()=>AudioEngine.beep("meteor"),300);
-setTimeout(()=>AudioEngine.beep("meteor"),600);
+log.innerText="METEOR BURST";
 }
 
 else if(v==="/god"){
 AudioEngine.beep("unlock");
 document.body.style.filter="hue-rotate(180deg)";
-log("GOD MODE");
-}
-
-else if(v==="/clear"){
-log("CLEARED");
+log.innerText="GOD MODE";
 }
 
 else{
-log("UNKNOWN COMMAND");
+log.innerText="UNKNOWN";
 }
 });
 
-/* INTRO */
+/* ================= PROFILE ================= */
+let p=0;
+document.getElementById("profile").onclick=()=>{
+p++;
+if(p===5){
+AudioEngine.beep("unlock");
+alert("PROFILE GOD MODE");
+}
+};
+
+/* ================= START ================= */
 setTimeout(()=>{
 document.getElementById("intro").style.display="none";
-AudioEngine.startAmbient();
-},3500);
+AudioEngine.unlock();
+startMeteor();
+},3000);
 
 </script>
 

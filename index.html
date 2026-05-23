@@ -3,14 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kaynne ORIGIN OS 6</title>
+<title>Kayyne ORIGIN OS 6</title>
 
 <style>
 
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
-body{height:100vh;overflow:hidden;background:black;transition:.4s;}
 
-/* MODE FIX */
+body{
+height:100vh;
+overflow:hidden;
+background:black;
+transition:.4s;
+}
+
+/* MODE */
 body.low{filter:brightness(.7) contrast(.9);}
 body.ultra{filter:brightness(1.1) contrast(1.2);}
 
@@ -22,19 +28,17 @@ radial-gradient(circle at 20% 30%,#ff00aa33,transparent 40%),
 radial-gradient(circle at 70% 60%,#00ffff33,transparent 40%),
 radial-gradient(circle at 50% 50%,#6a00ff22,transparent 60%);
 filter:blur(25px);
-animation:move 10s infinite alternate;
 }
-@keyframes move{to{transform:scale(1.1);}}
 
 /* STARS */
 .stars{
 position:fixed;inset:0;
 background:radial-gradient(2px 2px at 20px 30px,#fff,transparent);
 background-size:300px 300px;
-animation:stars 100s linear infinite;
-opacity:.35;
+animation:move 100s linear infinite;
+opacity:.4;
 }
-@keyframes stars{to{transform:translateY(-1200px);}}
+@keyframes move{to{transform:translateY(-1200px);}}
 
 /* UI */
 .container{
@@ -57,8 +61,8 @@ height:90px;
 border-radius:50%;
 border:3px solid cyan;
 box-shadow:0 0 20px cyan;
-cursor:pointer;
 margin-bottom:10px;
+cursor:pointer;
 }
 
 /* LINKS */
@@ -87,9 +91,9 @@ pointer-events:none;
 position:fixed;inset:0;
 background:black;
 display:flex;
+flex-direction:column;
 justify-content:center;
 align-items:center;
-flex-direction:column;
 z-index:9999;
 }
 
@@ -107,13 +111,14 @@ animation:spin 1s linear infinite;
 position:fixed;
 bottom:80px;
 left:20px;
-background:rgba(0,0,0,.8);
+background:rgba(0,0,0,.85);
 color:#0ff;
 padding:10px;
 border-radius:10px;
 font-size:12px;
 display:none;
 width:240px;
+z-index:9999;
 }
 
 #cmdInput{
@@ -135,25 +140,40 @@ padding:10px;
 border:none;
 border-radius:10px;
 cursor:pointer;
+z-index:9999;
 }
+
 #modeBtn{left:20px;}
 #soundBtn{right:20px;}
+
+/* ROCKET CMD BUTTON */
+#rocket{
+position:fixed;
+top:15px;
+right:15px;
+background:#ff0;
+border:none;
+padding:10px;
+border-radius:50%;
+cursor:pointer;
+font-size:16px;
+z-index:9999;
+}
 
 </style>
 </head>
 
 <body class="ultra">
 
-<!-- LOADER -->
-<div id="intro">
-<div class="portal"></div>
-<h3 style="color:white;margin-top:15px;">ENTERING GALAXY...</h3>
-</div>
-
+<!-- SPACE -->
 <div class="space"></div>
 <div class="stars"></div>
 <div class="meteor" id="meteor"></div>
 
+<!-- ROCKET CMD BUTTON -->
+<button id="rocket" onclick="toggleCMD()">🚀</button>
+
+<!-- UI -->
 <div class="container">
 
 <img src="profile.jpg" class="profile" id="profile">
@@ -161,8 +181,8 @@ cursor:pointer;
 <h2>@Kaynne</h2>
 
 <a class="link" href="https://wa.me/6282241102321">📞 My Wangsaff</a>
-<a class="link" href="https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv">📸 My Instagram</a>
-<a class="link" href="https://tiktok.com/@kayyneee">🔮 My TikTok</a>
+<a class="link" href="https://instagram.com/too.dika">📸 My IG</a>
+<a class="link" href="https://tiktok.com/@kayyneee">🔮 My Tiktok</a>
 
 </div>
 
@@ -172,12 +192,13 @@ cursor:pointer;
 <input id="cmdInput" placeholder="/help">
 </div>
 
+<!-- BUTTONS -->
 <button id="modeBtn" onclick="toggleMode()">MODE</button>
 <button id="soundBtn" onclick="toggleSound()">SOUND</button>
 
 <script>
 
-/* ================= AUDIO FIX TOTAL ================= */
+/* ================= AUDIO ================= */
 const AudioEngine={
 ctx:new (window.AudioContext||window.webkitAudioContext)(),
 master:null,
@@ -199,12 +220,13 @@ this.unlocked=true;
 },
 
 beep(type){
+
 if(!this.enabled) return;
 
 let f=440;
-if(type==="click")f=700;
 if(type==="meteor")f=120;
-if(type==="unlock")f=1000;
+if(type==="unlock")f=900;
+if(type==="click")f=600;
 
 const o=this.ctx.createOscillator();
 const g=this.ctx.createGain();
@@ -260,34 +282,38 @@ alert(this.enabled?"SOUND ON":"SOUND OFF");
 
 AudioEngine.init();
 
-/* ================= FIX SOUND UNLOCK ================= */
+/* UNLOCK AUDIO */
 document.body.addEventListener("click",()=>AudioEngine.unlock(),{once:true});
 
-/* ================= MODE FIX ================= */
+/* MODE */
 function toggleMode(){
+
 if(document.body.classList.contains("ultra")){
 document.body.classList.remove("ultra");
 document.body.classList.add("low");
-AudioEngine.stopAmbient();
 clearInterval(window.meteorLoop);
+AudioEngine.stopAmbient();
+document.querySelector(".stars").style.opacity="0.1";
 }else{
 document.body.classList.add("ultra");
 document.body.classList.remove("low");
-AudioEngine.startAmbient();
 startMeteor();
+document.querySelector(".stars").style.opacity="0.4";
 }
 }
 
-/* ================= SOUND ================= */
+/* SOUND */
 function toggleSound(){
 AudioEngine.toggle();
 }
 
-/* ================= METEOR FIX ================= */
+/* METEOR */
 function startMeteor(){
+
 clearInterval(window.meteorLoop);
 
 window.meteorLoop=setInterval(()=>{
+
 if(!document.body.classList.contains("ultra")) return;
 
 AudioEngine.beep("meteor");
@@ -296,21 +322,23 @@ let m=document.getElementById("meteor");
 m.classList.add("active");
 setTimeout(()=>m.classList.remove("active"),400);
 
-},4000);
+},3000);
 }
 
-/* ================= CMD ================= */
+/* CMD */
 let cmdOpen=false;
 const cmd=document.getElementById("cmd");
 const input=document.getElementById("cmdInput");
 const log=document.getElementById("cmdLog");
 
-document.addEventListener("keydown",(e)=>{
-if(e.key==="c"){
+function toggleCMD(){
 cmdOpen=!cmdOpen;
 cmd.style.display=cmdOpen?"block":"none";
 if(cmdOpen) input.focus();
 }
+
+document.addEventListener("keydown",(e)=>{
+if(e.key==="c") toggleCMD();
 });
 
 input.addEventListener("keydown",(e)=>{
@@ -319,7 +347,7 @@ if(e.key!=="Enter") return;
 let v=input.value.toLowerCase();
 input.value="";
 
-if(v==="/help") log.innerText="/ultra /low /sound /meteor /god";
+if(v==="/help") log.innerText="/ultra /low /sound /meteor /god /void /reset";
 
 else if(v==="/ultra"){
 document.body.classList.add("ultra");
@@ -352,22 +380,43 @@ document.body.style.filter="hue-rotate(180deg)";
 log.innerText="GOD MODE";
 }
 
+else if(v==="/void"){
+document.body.style.filter="invert(1)";
+log.innerText="VOID MODE";
+}
+
+else if(v==="/reset"){
+location.reload();
+}
+
 else{
-log.innerText="UNKNOWN";
+log.innerText="UNKNOWN COMMAND";
 }
 });
 
-/* ================= PROFILE ================= */
+/* PROFILE EASTER EGG */
 let p=0;
 document.getElementById("profile").onclick=()=>{
 p++;
 if(p===5){
 AudioEngine.beep("unlock");
-alert("PROFILE GOD MODE");
+document.body.style.filter="contrast(1.5)";
+alert("GOD PROFILE MODE");
 }
 };
 
-/* ================= START ================= */
+/* ROCKET EASTER EGG */
+let r=0;
+document.getElementById("rocket").onclick=()=>{
+r++;
+if(r===7){
+AudioEngine.beep("unlock");
+document.body.style.filter="hue-rotate(90deg)";
+alert("SECRET SPACE MODE");
+}
+};
+
+/* START */
 setTimeout(()=>{
 document.getElementById("intro").style.display="none";
 AudioEngine.unlock();

@@ -3,19 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kaynne Galaxy Ultimate V3</title>
+<title>Kaynne ORIGIN OS 6 </title>
 
 <style>
 
-/* ================= BASIC ================= */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
 body{height:100vh;overflow:hidden;background:black;transition:.4s;}
 
-/* ================= MODES ================= */
+/* MODES */
 body.low{--blur:10px;}
-body.ultra{--blur:35px;}
+body.ultra{--blur:30px;}
 
-/* ================= SPACE ================= */
+/* SPACE */
 .space{
 position:fixed;inset:0;
 background:
@@ -27,11 +26,10 @@ animation:move 10s infinite alternate;
 }
 @keyframes move{to{transform:scale(1.1);}}
 
-/* ================= STARS ================= */
+/* STARS */
 .stars{
 position:fixed;inset:0;
-background:radial-gradient(2px 2px at 20px 30px,#fff,transparent),
-radial-gradient(1px 1px at 80px 90px,#fff,transparent);
+background:radial-gradient(2px 2px at 20px 30px,#fff,transparent);
 background-size:300px 300px;
 animation:stars 120s linear infinite;
 opacity:.35;
@@ -39,7 +37,7 @@ opacity:.35;
 body.low .stars{opacity:.1;animation:none;}
 @keyframes stars{to{transform:translateY(-1200px);}}
 
-/* ================= PLANET ================= */
+/* PLANET */
 .planet{
 position:fixed;
 width:80px;height:80px;
@@ -49,16 +47,8 @@ box-shadow:0 0 25px cyan;
 top:15%;left:10%;
 cursor:pointer;
 }
-body.ultra .planet{animation:orbit 18s linear infinite;}
-@keyframes orbit{
-0%{transform:translate(0,0);}
-25%{transform:translate(200px,50px);}
-50%{transform:translate(0,200px);}
-75%{transform:translate(-200px,50px);}
-100%{transform:translate(0,0);}
-}
 
-/* ================= UI ================= */
+/* UI */
 .container{
 position:absolute;
 top:50%;left:50%;
@@ -72,7 +62,20 @@ backdrop-filter:blur(12px);
 border-radius:20px;
 }
 
-/* ================= LINKS ================= */
+/* PROFILE */
+.profile{
+width:90px;
+height:90px;
+border-radius:50%;
+border:3px solid cyan;
+box-shadow:0 0 20px cyan;
+cursor:pointer;
+margin-bottom:10px;
+transition:.3s;
+}
+.profile:hover{transform:scale(1.1);}
+
+/* LINKS */
 .link{
 display:block;
 margin:10px 0;
@@ -83,9 +86,9 @@ color:white;
 text-decoration:none;
 transition:.3s;
 }
-.link:hover{transform:scale(1.05);background:rgba(0,255,255,0.15);}
+.link:hover{transform:scale(1.05);background:rgba(0,255,255,0.2);}
 
-/* ================= METEOR ================= */
+/* METEOR */
 .meteor{
 position:fixed;inset:0;
 background:radial-gradient(circle,orange,transparent);
@@ -95,19 +98,7 @@ pointer-events:none;
 .meteor.active{animation:boom .4s;}
 @keyframes boom{50%{opacity:1;}}
 
-/* ================= TRAIL ================= */
-.trail{
-position:fixed;
-width:6px;height:6px;
-border-radius:50%;
-background:white;
-pointer-events:none;
-animation:fade .7s forwards;
-}
-body.low .trail{display:none;}
-@keyframes fade{to{opacity:0;transform:scale(0);}}
-
-/* ================= LOADER ================= */
+/* LOADER */
 #intro{
 position:fixed;inset:0;
 background:black;
@@ -139,17 +130,14 @@ animation:warp 3.5s ease forwards;
 width:140px;height:140px;
 position:relative;
 }
-
 .ring{
 position:absolute;inset:0;
 border-radius:50%;
 border:2px solid cyan;
 animation:spin 1.2s linear infinite;
 }
-
-.ring:nth-child(2){border-color:magenta;animation-duration:1.8s;}
-.ring:nth-child(3){border-color:white;animation-duration:2.4s;}
-
+.ring:nth-child(2){border-color:magenta;}
+.ring:nth-child(3){border-color:white;}
 .core{
 position:absolute;top:50%;left:50%;
 transform:translate(-50%,-50%);
@@ -158,29 +146,45 @@ background:cyan;
 border-radius:50%;
 box-shadow:0 0 20px cyan;
 }
+@keyframes spin{to{transform:rotate(360deg);}}
 
-@keyframes spin{to{transform:rotate(360deg);} }
-
-#intro h1{
-color:white;
-font-size:14px;
-letter-spacing:4px;
-margin-top:20px;
-animation:glow 1.2s infinite;
+/* CMD */
+#cmd{
+position:fixed;
+bottom:80px;
+left:20px;
+background:rgba(0,0,0,0.75);
+color:#0ff;
+padding:10px;
+border-radius:10px;
+font-size:12px;
+display:none;
+width:240px;
 }
-@keyframes glow{50%{opacity:.4;transform:scale(1.05);}}
 
-/* ================= TOGGLE ================= */
-.toggle{
+#cmdInput{
+width:100%;
+margin-top:6px;
+padding:6px;
+border:none;
+outline:none;
+border-radius:6px;
+background:black;
+color:#0ff;
+}
+
+/* BUTTONS */
+.toggle,.soundBtn{
 position:fixed;
 bottom:20px;
-left:20px;
-z-index:999;
 padding:10px;
 border:none;
 border-radius:10px;
 cursor:pointer;
+z-index:999;
 }
+.toggle{left:20px;}
+.soundBtn{right:20px;}
 
 </style>
 </head>
@@ -197,35 +201,44 @@ cursor:pointer;
       <div class="core"></div>
     </div>
   </div>
-  <h1>ENTERING GALAXY...</h1>
+  <h1 style="color:white;font-size:14px;">ENTERING GALAXY...</h1>
 </div>
 
-<!-- SPACE -->
 <div class="space"></div>
 <div class="stars"></div>
-<div class="planet" id="planet"></div>
 <div class="meteor" id="meteor"></div>
 
 <!-- UI -->
 <div class="container">
 
+<img src="profile.jpg" class="profile" id="profile">
+
 <h2>@Kaynne</h2>
 
-<a class="link" href="https://wa.me/6282241102321">📞 My Wangsaf</a>
+<a class="link" href="https://wa.me/6282241102321">📞 My Wangsaff</a>
 <a class="link" href="https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv">📸 My Instagram</a>
 <a class="link" href="https://tiktok.com/@kayyneee">🔮 My TikTok</a>
 
 </div>
 
+<!-- CMD -->
+<div id="cmd">
+<div id="cmdLog">GALAXY CMD READY</div>
+<input id="cmdInput" placeholder="type /help">
+</div>
+
+<!-- BUTTONS -->
 <button class="toggle" onclick="toggleMode()">⚡ / 🚀</button>
+<button class="soundBtn" onclick="toggleSound()">🔊 SOUND</button>
 
 <script>
 
-/* ================= AUDIO ENGINE ================= */
+/* ================= AUDIO ================= */
 const AudioEngine={
 ctx:new (window.AudioContext||window.webkitAudioContext)(),
 master:null,
 ambient:null,
+enabled:true,
 
 init(){
 this.master=this.ctx.createGain();
@@ -235,7 +248,7 @@ this.master.connect(this.ctx.destination);
 
 beep(type){
 
-if(document.body.classList.contains("low")) return;
+if(!this.enabled) return;
 
 let f=400;
 if(type==="click")f=600;
@@ -257,9 +270,7 @@ o.stop(this.ctx.currentTime+0.15);
 },
 
 startAmbient(){
-
-if(this.ambient) return;
-if(document.body.classList.contains("low")) return;
+if(this.ambient || !this.enabled) return;
 
 const o=this.ctx.createOscillator();
 const g=this.ctx.createGain();
@@ -280,42 +291,47 @@ if(this.ambient){
 this.ambient.stop();
 this.ambient=null;
 }
+},
+
+toggle(){
+this.enabled=!this.enabled;
+if(!this.enabled){
+this.stopAmbient();
+alert("SOUND OFF");
+}else{
+this.startAmbient();
+alert("SOUND ON");
+}
 }
 };
 
 AudioEngine.init();
 
-/* start ambient after warp */
-setTimeout(()=>AudioEngine.startAmbient(),2000);
+/* UNLOCK AUDIO */
+document.body.addEventListener("click",()=>{
+AudioEngine.ctx.resume();
+AudioEngine.startAmbient();
+},{once:true});
 
-/* ================= MODE ================= */
+/* MODE */
 function toggleMode(){
 if(document.body.classList.contains("ultra")){
 document.body.classList.remove("ultra");
 document.body.classList.add("low");
 AudioEngine.stopAmbient();
-alert("LOW MODE");
 }else{
 document.body.classList.add("ultra");
 document.body.classList.remove("low");
 AudioEngine.startAmbient();
-alert("ULTRA MODE");
 }
 }
 
-/* ================= TRAIL ================= */
-document.addEventListener("mousemove",(e)=>{
-if(document.body.classList.contains("low")) return;
+/* SOUND */
+function toggleSound(){
+AudioEngine.toggle();
+}
 
-const t=document.createElement("div");
-t.className="trail";
-t.style.left=e.clientX+"px";
-t.style.top=e.clientY+"px";
-document.body.appendChild(t);
-setTimeout(()=>t.remove(),700);
-});
-
-/* ================= METEOR ================= */
+/* METEOR */
 setInterval(()=>{
 if(!document.body.classList.contains("ultra")) return;
 
@@ -327,35 +343,92 @@ setTimeout(()=>m.classList.remove("active"),400);
 
 },5000);
 
-/* ================= LINKS ================= */
+/* LINKS SOUND */
 document.querySelectorAll(".link").forEach(el=>{
-el.addEventListener("click",()=>{
-AudioEngine.beep("click");
-});
+el.addEventListener("click",()=>AudioEngine.beep("click"));
 });
 
-/* ================= PLANET ================= */
-document.getElementById("planet").onclick=()=>{
-AudioEngine.beep("click");
-alert("Planet Active");
-};
-
-/* ================= EASTER EGG ================= */
-let c=0;
-document.body.addEventListener("click",(e)=>{
-if(e.target.classList.contains("link")) return;
-
-c++;
-if(c===10){
+/* PROFILE EGG */
+let p=0;
+document.getElementById("profile").onclick=()=>{
+p++;
+if(p===5){
 AudioEngine.beep("unlock");
 document.body.style.filter="hue-rotate(180deg)";
-alert("GALAXY GLITCH MODE");
+alert("PROFILE GOD MODE");
+}
+};
+
+/* CMD SYSTEM */
+const cmdBox=document.getElementById("cmd");
+const cmdInput=document.getElementById("cmdInput");
+const cmdLog=document.getElementById("cmdLog");
+
+let cmdOpen=false;
+
+document.addEventListener("keydown",(e)=>{
+if(e.key==="c"){
+cmdOpen=!cmdOpen;
+cmdBox.style.display=cmdOpen?"block":"none";
+if(cmdOpen) cmdInput.focus();
 }
 });
 
-/* ================= LOADER REMOVE ================= */
+function log(t){cmdLog.innerHTML=t;}
+
+cmdInput.addEventListener("keydown",(e)=>{
+if(e.key!=="Enter") return;
+
+let v=cmdInput.value.toLowerCase();
+cmdInput.value="";
+
+if(v==="/help") log("/ultra /low /sound /meteor /god /clear");
+
+else if(v==="/ultra"){
+document.body.classList.add("ultra");
+document.body.classList.remove("low");
+AudioEngine.startAmbient();
+log("ULTRA MODE");
+}
+
+else if(v==="/low"){
+document.body.classList.add("low");
+document.body.classList.remove("ultra");
+AudioEngine.stopAmbient();
+log("LOW MODE");
+}
+
+else if(v==="/sound"){
+AudioEngine.toggle();
+log("SOUND TOGGLE");
+}
+
+else if(v==="/meteor"){
+log("METEOR STORM");
+AudioEngine.beep("meteor");
+setTimeout(()=>AudioEngine.beep("meteor"),300);
+setTimeout(()=>AudioEngine.beep("meteor"),600);
+}
+
+else if(v==="/god"){
+AudioEngine.beep("unlock");
+document.body.style.filter="hue-rotate(180deg)";
+log("GOD MODE");
+}
+
+else if(v==="/clear"){
+log("CLEARED");
+}
+
+else{
+log("UNKNOWN COMMAND");
+}
+});
+
+/* INTRO */
 setTimeout(()=>{
 document.getElementById("intro").style.display="none";
+AudioEngine.startAmbient();
 },3500);
 
 </script>

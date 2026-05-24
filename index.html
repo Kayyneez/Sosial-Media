@@ -158,6 +158,29 @@ background:#111;
 color:white;
 cursor:pointer;
 }
+
+/* TOAST */
+#toast{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(0,0,0,0.7);
+color:white;
+padding:10px 18px;
+border-radius:999px;
+font-size:14px;
+opacity:0;
+transition:.3s;
+z-index:999999;
+pointer-events:none;
+}
+
+#toast.show{
+opacity:1;
+transform:translateX(-50%) translateY(10px);
+}
+  
 </style>
 </head>
 
@@ -222,11 +245,24 @@ startMeteor();
 /* MODE */
 let mode="ultra";
 
+/*toast*/
+function showToast(text){
+let t=document.getElementById("toast");
+t.innerText=text;
+t.classList.add("show");
+
+setTimeout(()=>{
+t.classList.remove("show");
+},1200);
+}
+  
 /* ULTRA */
 function setUltra(){
 mode="ultra";
 document.body.classList.add("ultra");
 document.body.classList.remove("low","glitch");
+
+showToast("⚡ ULTRA GRAPHIC ON");
 }
 
 /* LOW */
@@ -234,6 +270,8 @@ function setLow(){
 mode="low";
 document.body.classList.add("low");
 document.body.classList.remove("ultra","glitch");
+
+showToast("🪐 LOW MODE ON");
 }
 
 /* MUSIC */
@@ -295,7 +333,7 @@ setTimeout(()=>window.location.href=link,1200);
 
 /* VOICE AI */
 function voiceAI(){
-let msg=new SpeechSynthesisUtterance("Halo, ini Kaynne Origin OS aktif");
+let msg=new SpeechSynthesisUtterance("Welcome To My Media Sosial");
 speechSynthesis.speak(msg);
 }
 

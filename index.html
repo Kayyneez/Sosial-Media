@@ -65,17 +65,6 @@ box-shadow:0 0 20px cyan;
 @keyframes spin{
 to{transform:rotate(360deg);}
 }
-  
-/* SPACE */
-.space{
-position:fixed;
-inset:0;
-background:
-radial-gradient(circle at 20% 30%,#ff00aa33,transparent 40%),
-radial-gradient(circle at 70% 60%,#00ffff33,transparent 40%),
-radial-gradient(circle at 50% 50%,#6a00ff22,transparent 60%);
-filter:blur(25px);
-}
 
 /* GALAXY */
 .space{
@@ -99,21 +88,6 @@ opacity:.4;
 }
 @keyframes move{
 to{transform:translateY(-1200px);}
-}
-
-/* UI */
-.container{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:320px;
-padding:20px;
-text-align:center;
-color:white;
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(12px);
-border-radius:20px;
 }
 
 /* PROFILE */
@@ -189,7 +163,7 @@ cursor:pointer;
 </style>
 </head>
 
-<body class="Ultra">
+<body class="ultra">
   
   <!-- LOADER -->
 <div id="loader">

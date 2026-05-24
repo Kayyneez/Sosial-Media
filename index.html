@@ -33,31 +33,6 @@ body.glitch{animation:glitch .2s infinite;}
 100%{filter:hue-rotate(240deg) contrast(1.5);}
 }
 
-/* LOADER */
-#loader{
-position:fixed;inset:0;
-background:black;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-z-index:99999;
-color:white;
-gap:15px;
-}
-
-.portal{
-width:90px;height:90px;
-border-radius:50%;
-border:3px solid cyan;
-border-top:3px solid magenta;
-border-right:3px solid white;
-animation:spin 1s linear infinite;
-box-shadow:0 0 20px cyan;
-}
-
-@keyframes spin{to{transform:rotate(360deg);}}
-
 /* SPACE */
 .space{
 position:fixed;inset:0;
@@ -101,6 +76,7 @@ border-radius:50%;
 border:3px solid cyan;
 box-shadow:0 0 20px cyan;
 margin-bottom:10px;
+cursor:pointer;
 }
 
 /* LINKS */
@@ -123,14 +99,13 @@ background:rgba(0,255,255,0.15);
 
 /* METEOR */
 .meteor{
-position:fixed;inset:0;
+position:fixed;
+inset:0;
 background:radial-gradient(circle,orange,transparent);
 opacity:0;
 pointer-events:none;
 }
-
 .meteor.active{animation:boom .4s;}
-
 @keyframes boom{50%{opacity:1;}}
 
 /* BUTTONS */
@@ -153,9 +128,10 @@ color:white;
 cursor:pointer;
 }
 
-/* WARP */
+/* WARP SCREEN */
 #warpScreen{
-position:fixed;inset:0;
+position:fixed;
+inset:0;
 background:black;
 display:flex;
 justify-content:center;
@@ -173,13 +149,63 @@ pointer-events:auto;
 
 #warpScreen::before{
 content:"";
-width:120px;
-height:120px;
+width:120px;height:120px;
 border-radius:50%;
 border:3px solid cyan;
 border-top:3px solid magenta;
 animation:spin .8s linear infinite;
 box-shadow:0 0 30px cyan;
+}
+
+.portal{
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* LOADER */
+#loader{
+position:fixed;
+inset:0;
+background:black;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:99999;
+color:white;
+gap:15px;
+overflow:hidden;
+}
+
+.loaderPortal{
+width:110px;height:110px;
+border-radius:50%;
+border:3px solid cyan;
+border-top:3px solid magenta;
+border-right:3px solid white;
+animation:spin 1s linear infinite, pulse 1.2s ease-in-out infinite;
+box-shadow:0 0 30px cyan;
+}
+
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.2);}
+100%{transform:scale(1);}
+}
+
+.particle{
+position:absolute;
+width:4px;
+height:4px;
+background:white;
+border-radius:50%;
+animation:fly 1.4s linear forwards;
+}
+
+@keyframes fly{
+0%{transform:translate(0,0);opacity:1;}
+100%{transform:translate(var(--x), var(--y)) scale(0);opacity:0;}
 }
 
 </style>
@@ -189,7 +215,7 @@ box-shadow:0 0 30px cyan;
 
 <!-- LOADER -->
 <div id="loader">
-<div class="portal"></div>
+<div class="loaderPortal"></div>
 <h3>ENTERING GALAXY...</h3>
 </div>
 
@@ -207,9 +233,9 @@ box-shadow:0 0 30px cyan;
 <img src="profile.jpg" class="profile" id="profile">
 <h2>@Kaynne</h2>
 
-<a class="link" onclick="goTo('wa')">📞 My Wangsaff</a>
-<a class="link" onclick="goTo('ig')">📸 My Ig</a>
-<a class="link" onclick="goTo('tt')">🔮 My TikTok</a>
+<a class="link" onclick="goTo('wa')">📞 WhatsApp</a>
+<a class="link" onclick="goTo('ig')">📸 Instagram</a>
+<a class="link" onclick="goTo('tt')">🔮 TikTok</a>
 
 </div>
 
@@ -225,27 +251,71 @@ box-shadow:0 0 30px cyan;
 <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
 </audio>
 
+<!-- WARP SOUND -->
+<audio id="warpSound">
+<source src="https://www.soundjay.com/mechanical/sounds/warp-01.mp3">
+</audio>
+
 <script>
 
 let mode="ultra";
 let tapVoid=0;
 
-/* ULTRA */
+/* LOADER */
+function createParticles(){
+const loader=document.getElementById("loader");
+
+for(let i=0;i<45;i++){
+const p=document.createElement("div");
+p.className="particle";
+
+const angle=Math.random()*Math.PI*2;
+const dist=Math.random()*250;
+
+p.style.setProperty("--x",Math.cos(angle)*dist+"px");
+p.style.setProperty("--y",Math.sin(angle)*dist+"px");
+
+p.style.left="50%";
+p.style.top="50%";
+
+loader.appendChild(p);
+setTimeout(()=>p.remove(),1400);
+}
+}
+
+function hideLoader(){
+setTimeout(()=>{
+
+const s=document.getElementById("warpSound");
+if(s){s.volume=0.5;s.play().catch(()=>{});}
+
+createParticles();
+
+const l=document.getElementById("loader");
+if(l){
+l.style.transition="1s";
+l.style.opacity="0";
+l.style.transform="scale(1.4)";
+setTimeout(()=>l.remove(),900);
+}
+
+},1800);
+}
+
+window.addEventListener("load",hideLoader);
+
+/* MODE */
 function setUltra(){
 mode="ultra";
 document.body.classList.add("ultra");
 document.body.classList.remove("low","glitch");
-
-stopMeteor();
-startMeteor();
+stopMeteor();startMeteor();
 }
 
-/* LOW */
 function setLow(){
 mode="low";
 document.body.classList.add("low");
 document.body.classList.remove("ultra","glitch");
-
 stopMeteor();
 }
 
@@ -254,25 +324,21 @@ let music=document.getElementById("music");
 let play=false;
 
 function toggleMusic(){
-if(!play){
-music.play();play=true;
-}else{
-music.pause();play=false;
-}
+if(!play){music.play();play=true;}
+else{music.pause();play=false;}
 }
 
 /* METEOR */
 let meteorInterval=null;
 
 function startMeteor(){
-if(meteorInterval) return;
+if(meteorInterval)return;
 
 meteorInterval=setInterval(()=>{
-if(mode!=="ultra") return;
+if(mode!=="ultra")return;
 
 let m=document.getElementById("meteor");
 m.classList.add("active");
-
 setTimeout(()=>m.classList.remove("active"),400);
 
 },4000);
@@ -283,24 +349,24 @@ clearInterval(meteorInterval);
 meteorInterval=null;
 }
 
-/* WARP LINK */
+/* WARP LINKS */
 function goTo(type){
 
 let link="";
-if(type==="wa") link="https://wa.me/6282241102321";
-if(type==="ig") link="https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv";
-if(type==="tt") link="https://tiktok.com/@kayyneee";
+if(type==="wa")link="https://wa.me/6282241102321";
+if(type==="ig")link="https://instagram.com/too.dikaa";
+if(type==="tt")link="https://tiktok.com/@kayyneee";
 
-let warp=document.getElementById("warpScreen");
-warp.classList.add("active");
+const w=document.getElementById("warpScreen");
+w.classList.add("active");
 
 setTimeout(()=>{
-warp.classList.remove("active");
+w.classList.remove("active");
 window.location.href=link;
 },1200);
 }
 
-/* VOID MODE FIX */
+/* VOID MODE */
 document.getElementById("profile").onclick=()=>{
 
 tapVoid++;
@@ -310,7 +376,6 @@ mode="void";
 document.body.classList.add("glitch");
 document.body.classList.remove("low","ultra");
 stopMeteor();
-alert("🌀 VOID MODE");
 tapVoid=0;
 }
 
@@ -319,7 +384,6 @@ mode="ultra";
 document.body.classList.remove("glitch");
 document.body.classList.add("ultra");
 startMeteor();
-alert("🌌 BACK TO NORMAL");
 tapVoid=0;
 }
 };

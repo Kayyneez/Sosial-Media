@@ -266,7 +266,9 @@ document.getElementById("loader").remove();
 });
 
 /* MODE */
-let mode="ultra";
+let lastmode = "ultra";
+let tapProfile = 0;
+let isVoid = false;
 
 /* TOAST */
 function showToast(text){
@@ -336,14 +338,37 @@ speechSynthesis.speak(msg);
 }
 
 /* EASTER EGG */
-let tap=0;
-document.getElementById("profile").onclick=()=>{
-tap++;
-if(tap===5){
+let tapProfile = 0;
+let isVoid = false;
+
+document.getElementById("profile").onclick = () => {
+
+tapProfile++;
+
+if (tapProfile >= 5 && !isVoid) {
+isVoid = true;
+tapProfile = 0;
+
+mode = "void";
 document.body.classList.add("glitch");
-showToast("🌀 VOID MODE");
-tap=0;
+document.body.classList.remove("ultra","low");
+
+showToast("🌀 VOID MODE ON");
+return;
 }
+
+if (tapProfile >= 5 && isVoid) {
+isVoid = false;
+tapProfile = 0;
+
+mode = "ultra";
+document.body.classList.remove("glitch");
+document.body.classList.add("ultra");
+
+showToast("⚡ BACK TO NORMAL");
+return;
+}
+
 };
 
 </script>

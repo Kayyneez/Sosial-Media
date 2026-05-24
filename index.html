@@ -37,6 +37,7 @@ flex-direction:column;
 z-index:99999;
 color:white;
 gap:10px;
+transition:.5s;
 }
 
 .portal{
@@ -124,7 +125,6 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 z-index:99999;
-
 opacity:0;
 pointer-events:none;
 transition:.3s;
@@ -206,7 +206,6 @@ transition:.2s;
 #flash.active{
 opacity:.4;
 }
-
 </style>
 </head>
 
@@ -239,6 +238,7 @@ opacity:.4;
 <a class="link" onclick="go('tt')">🔮 TikTok</a>
 
 <button class="btn" onclick="voiceAI()">🎤 Voice AI</button>
+
 </div>
 
 <div class="bottomBar">
@@ -254,15 +254,19 @@ opacity:.4;
 <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
 </audio>
 
-<audio id="sfxMode" src="https://actions.google.com/sounds/v1/ui/power_up.ogg"></audio>
 <audio id="sfxWarp" src="https://actions.google.com/sounds/v1/transportation/airplane_takeoff.ogg"></audio>
+<audio id="sfxMode" src="https://actions.google.com/sounds/v1/ui/power_up.ogg"></audio>
 
 <script>
 
-/* LOADER */
-window.addEventListener("load",()=>{
-setTimeout(()=>{
-document.getElementById("loader").remove();
+/* LOADER FIX */
+window.addEventListener("load", () => {
+setTimeout(() => {
+let loader = document.getElementById("loader");
+if(loader){
+loader.style.opacity="0";
+setTimeout(()=>loader.style.display="none",500);
+}
 },1200);
 });
 
@@ -322,26 +326,34 @@ else{music.pause();on=false;}
 /* WARP */
 function go(type){
 let link="";
-
 if(type==="wa") link="https://wa.me/6282241102321";
-if(type==="ig") link="https://instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv";
+if(type==="ig") link="https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv";
 if(type==="tt") link="https://tiktok.com/@kayyneee";
 
 document.getElementById("warp").classList.add("active");
 document.getElementById("sfxWarp").play().catch(()=>{});
 
-setTimeout(()=>{
-window.location.href=link;
-},1200);
+setTimeout(()=>window.location.href=link,1200);
 }
 
 /* VOICE AI */
 function voiceAI(){
-let msg=new SpeechSynthesisUtterance("Welcome to my media sosial wok");
+let texts=[
+"Welcome To My Media sosial"
+];
+
+let msg=new SpeechSynthesisUtterance(
+texts[Math.floor(Math.random()*texts.length)]
+);
+
+msg.lang="en-US";
+msg.rate=1;
+msg.pitch=1;
+
 speechSynthesis.speak(msg);
 }
 
-/* VOID MODE (5 TAP PROFILE) */
+/* VOID MODE 5 TAP */
 document.getElementById("profile").onclick=()=>{
 
 tapProfile++;

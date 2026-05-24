@@ -6,383 +6,557 @@
 <title>Kaynne Origin OS</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
-
-body{
-height:100vh;
-overflow:hidden;
-background:black;
-transition:.3s;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* MODE */
-body.low{filter:brightness(.7) contrast(.9);}
-body.ultra{filter:brightness(1.2) contrast(1.2);}
-body.glitch{animation:glitch .2s infinite;}
-
-@keyframes glitch{
-0%{filter:hue-rotate(0deg) contrast(1.5);}
-50%{filter:hue-rotate(120deg) contrast(2);}
-100%{filter:hue-rotate(240deg) contrast(1.5);}
+body {
+    height: 100vh;
+    overflow: hidden;
+    background: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s ease, filter 0.3s ease;
 }
 
-/* LOADER */
-#loader{
-position:fixed;inset:0;
-background:black;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-z-index:99999;
-color:white;
-gap:10px;
+/* --- THEME MODES --- */
+body.light-mode {
+    background: #f0f2f5;
+}
+body.light-mode .space {
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(255, 0, 170, 0.1), transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(0, 255, 255, 0.1), transparent 40%);
+}
+body.light-mode .container {
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #1a1a1a;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+}
+body.light-mode .link {
+    background: rgba(0, 0, 0, 0.05);
+    color: #1a1a1a;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+body.light-mode .top-nav-btn {
+    background: rgba(0, 0, 0, 0.05);
+    color: #1a1a1a;
+}
+body.light-mode .mode-pill.active {
+    background: #1a1a1a;
+    color: #ffffff;
 }
 
-.portal{
-width:90px;height:90px;
-border-radius:50%;
-border:3px solid cyan;
-border-top:3px solid magenta;
-animation:spin 1s linear infinite;
-box-shadow:0 0 20px cyan;
+/* Glass Theme Override */
+body.glass-mode .container {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-@keyframes spin{to{transform:rotate(360deg);}}
+body.glitch { animation: glitch .2s infinite; }
 
-/* SPACE */
-.space,.stars{
-position:fixed;inset:0;
+@keyframes glitch {
+    0% { filter: hue-rotate(0deg) contrast(1.5); }
+    50% { filter: hue-rotate(120deg) contrast(2); }
+    100% { filter: hue-rotate(240deg) contrast(1.5); }
 }
 
-.space{
-background:
-radial-gradient(circle at 20% 30%,#ff00aa33,transparent 40%),
-radial-gradient(circle at 70% 60%,#00ffff33,transparent 40%),
-radial-gradient(circle at 50% 50%,#6a00ff22,transparent 60%);
-filter:blur(25px);
+/* --- LOADER --- */
+#loader {
+    position: fixed; inset: 0;
+    background: #050505;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 99999;
+    color: white;
+    gap: 15px;
 }
 
-.stars{
-background:radial-gradient(2px 2px at 20px 30px,#fff,transparent);
-background-size:300px 300px;
-animation:move 120s linear infinite;
-opacity:.4;
+.portal {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top: 3px solid #ff4d6d;
+    border-right: 3px solid #ff53d9;
+    animation: spin 0.8s linear infinite;
 }
 
-@keyframes move{to{transform:translateY(-1200px);}}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* UI */
-.container{
-position:absolute;
-top:50%;left:50%;
-transform:translate(-50%,-50%);
-width:320px;
-padding:20px;
-text-align:center;
-color:white;
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(12px);
-border-radius:20px;
+/* --- BACKGROUND EFFECTS --- */
+.space, .stars {
+    position: fixed; inset: 0;
+    z-index: 1;
 }
 
-.profile{
-width:90px;height:90px;
-border-radius:50%;
-border:3px solid cyan;
-box-shadow:0 0 20px cyan;
-margin-bottom:10px;
-cursor:pointer;
+.space {
+    background:
+        radial-gradient(circle at 15% 15%, #ff00aa1a, transparent 40%),
+        radial-gradient(circle at 85% 85%, #00ffff1a, transparent 40%),
+        radial-gradient(circle at 50% 50%, #1a0033, #000000 70%);
+    filter: blur(10px);
 }
 
-.link{
-display:block;
-margin:10px 0;
-padding:12px;
-border-radius:999px;
-background:rgba(255,255,255,0.08);
-color:white;
-text-decoration:none;
-cursor:pointer;
-transition:.2s;
-}
-.link:hover{transform:scale(1.05);}
-
-/* STATUS */
-#status{
-margin-top:10px;
-font-size:12px;
-opacity:.7;
+.stars {
+    background: radial-gradient(1.5px 1.5px at 40px 70px, #fff, transparent);
+    background-size: 250px 250px;
+    animation: move 150s linear infinite;
+    opacity: .25;
 }
 
-/* WARP */
-#warp{
-position:fixed;inset:0;
-background:black;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:99999;
-opacity:0;
-pointer-events:none;
-transition:.3s;
+@keyframes move { to { transform: translateY(-1000px); } }
+
+/* --- BARIS PANEL KONTROL ATAS --- */
+.top-controls {
+    position: fixed;
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+    width: 100%;
+    max-width: 350px;
+    justify-content: space-between;
+    padding: 0 15px;
 }
 
-#warp.active{
-opacity:1;
-pointer-events:auto;
+.top-nav-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 8px 14px;
+    border-radius: 999px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.warpPortal{
-width:120px;
-height:120px;
-border-radius:50%;
-border:3px solid cyan;
-border-top:3px solid magenta;
-animation:spin .5s linear infinite;
-box-shadow:0 0 40px cyan;
+.top-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
 }
 
-#warpText{
-color:white;
-margin-top:15px;
-font-size:14px;
-opacity:.8;
+.theme-switcher-group {
+    display: flex;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 3px;
+    border-radius: 999px;
+    gap: 4px;
 }
 
-/* BUTTON */
-.bottomBar{
-position:fixed;
-bottom:15px;
-left:50%;
-transform:translateX(-50%);
-display:flex;
-gap:10px;
+.mode-pill {
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.btn{
-padding:10px 14px;
-border-radius:999px;
-border:none;
-background:#111;
-color:white;
-cursor:pointer;
+.mode-pill.active {
+    background: #ffffff;
+    color: #000000;
 }
 
-/* TOAST */
-#toast{
-position:fixed;
-top:20px;
-left:50%;
-transform:translateX(-50%);
-background:rgba(0,0,0,0.7);
-color:white;
-padding:10px 18px;
-border-radius:999px;
-font-size:14px;
-opacity:0;
-transition:.3s;
-z-index:999999;
+/* --- CONTAINER UTAMA PROFILE (GLASS UI) --- */
+.container {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    max-width: 340px;
+    padding: 30px 24px;
+    text-align: center;
+    color: white;
+    background: rgba(20, 16, 35, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(20px);
+    border-radius: 32px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
 }
 
-#toast.show{
-opacity:1;
-transform:translateX(-50%) translateY(10px);
+.avatar-wrapper {
+    position: relative;
+    width: 105px;
+    height: 105px;
+    margin: 0 auto 18px;
 }
 
-/* FLASH */
-#flash{
-position:fixed;
-inset:0;
-background:white;
-opacity:0;
-pointer-events:none;
-z-index:999998;
-transition:.2s;
+.profile {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 25px rgba(162, 0, 255, 0.3);
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-#flash.active{
-opacity:.4;
+.profile:hover {
+    transform: scale(1.05);
 }
+
+h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+}
+
+.bio-text {
+    font-size: 13px;
+    line-height: 1.6;
+    opacity: 0.65;
+    margin-bottom: 24px;
+    padding: 0 5px;
+}
+
+/* --- BUTTON LINK LIST --- */
+.link {
+    display: flex;
+    align-items: center;
+    margin: 12px 0;
+    padding: 14px 20px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.link svg {
+    margin-right: 14px;
+    width: 18px;
+    height: 18px;
+    opacity: 0.8;
+}
+
+.link:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* --- CONTROL PANEL BAWAH --- */
+.bottomBar {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.btn {
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: none;
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* --- WARP PANEL LAYOUT --- */
+#warp {
+    position: fixed; inset: 0;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+#warp.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.warpPortal {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 3px solid #ff4d6d;
+    border-top: 3px solid #00ffff;
+    animation: spin .4s linear infinite;
+}
+
+#warpText {
+    color: white;
+    margin-top: 20px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    opacity: 0.7;
+}
+
+/* --- TOAST & FLASH COMPONENTS --- */
+#toast {
+    position: fixed; top: 85px; left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    background: rgba(255, 255, 255, 0.9);
+    color: #000;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 999999;
+}
+#toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+#flash {
+    position: fixed; inset: 0;
+    background: white; opacity: 0;
+    pointer-events: none; z-index: 999998;
+    transition: opacity .15s ease;
+}
+#flash.active { opacity: .25; }
 </style>
 </head>
 
-<body class="ultra">
+<body>
 
-<!-- LOADER -->
 <div id="loader">
-<div class="portal"></div>
-<div>sabarr yah azril...</div>
+    <div class="portal"></div>
+    <div style="font-size: 12px; letter-spacing: 1px; opacity: 0.6;">sabarr yah...</div>
 </div>
 
-<!-- WARP -->
 <div id="warp">
-<div class="warpPortal"></div>
-<div id="warpText">bentar wok...</div>
+    <div class="warpPortal"></div>
+    <div id="warpText">bentar wok...</div>
 </div>
 
 <div class="space"></div>
 <div class="stars"></div>
 
-<div class="container">
-
-<img src="profile.jpg" class="profile" id="profile">
-<h2>@Kaynne</h2>
-
-<div id="status">⚡ ULTRA GRAPHIC ACTIVE</div>
-
-<a class="link" onclick="go('wa')">Wangsaff Gua</a>
-<a class="link" onclick="go('ig')">IG Gua</a>
-<a class="link" onclick="go('tt')"> My Tiktok</a>
-
-<button class="btn" onclick="voiceAI()">🎤 Voice AI</button>
-
+<div class="top-controls">
+    <button class="top-nav-btn" onclick="toggleMusic()" id="ambientMuteBtn">
+        <span id="muteIcon" style="display:inline-flex; align-items:center;">
+            <span style="margin-right:5px;">AMBIENT // MUTE</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+        </span>
+    </button>
+    
+    <div class="theme-switcher-group">
+        <button class="mode-pill active" id="darkPill" onclick="setTheme('dark')">DARK</button>
+        <button class="mode-pill" id="lightPill" onclick="setTheme('light')">LIGHT</button>
+        <button class="mode-pill" id="glassPill" onclick="setTheme('glass')">GLASS</button>
+    </div>
 </div>
 
-<div class="bottomBar">
-<button class="btn" onclick="setUltra()">ULTRA</button>
-<button class="btn" onclick="setLow()">LOW</button>
-<button class="btn" onclick="toggleMusic()">🎵</button>
+<div class="container">
+    <div class="avatar-wrapper">
+        <img src="profile.jpg" class="profile" id="profile" alt="Avatar">
+    </div>
+    
+    <h2>Hu Tao</h2>
+    
+    <div class="bio-text">
+        Hu Tao merupakan Direktur ke-77 Wangsheng Funeral Parlor di Liyue. Ia dikenal sebagai sosok ceria, unik, dan penuh semangat, dengan kepribadian yang mampu membawa suasana hangat bagi orang-orang di sekitarnya.
+    </div>
+
+    <a class="link" onclick="go('wa')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+        WhatsApp
+    </a>
+    <a class="link" onclick="go('ig')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        Instagram
+    </a>
+    <a class="link" onclick="go('tt')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a8 8 0 0 0 8 8h-2a6 6 0 0 1-6-6v12a4 4 0 0 0-4-4z"></path></svg>
+        TikTok
+    </a>
+
+    <div class="bottomBar">
+        <button class="btn" onclick="voiceAI()">🎤 Voice AI</button>
+    </div>
 </div>
 
 <div id="toast"></div>
 <div id="flash"></div>
 
 <audio id="music" loop>
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
 </audio>
 
 <audio id="sfxWarp" src="https://actions.google.com/sounds/v1/transportation/airplane_takeoff.ogg"></audio>
-<audio id="sfxMode" src="https://actions.google.com/sounds/v1/ui/power_up.ogg"></audio>
 
 <script>
-
-/* LOADER FIX */
+/* LOADER MANAGER */
 window.addEventListener("load", () => {
-setTimeout(() => {
-let loader = document.getElementById("loader");
-if(loader){
-loader.style.opacity="0";
-setTimeout(()=>loader.remove(),500);
-}
-},1200);
+    setTimeout(() => {
+        let loader = document.getElementById("loader");
+        if(loader){
+            loader.style.opacity = "0";
+            setTimeout(() => loader.remove(), 500);
+        }
+    }, 1200);
 });
 
-/* STATE */
-let mode="ultra";
-let tapProfile=0;
-let isVoid=false;
+/* STATE SYSTEM */
+let tapProfile = 0;
+let isVoid = false;
+let isMusicPlaying = false;
+const music = document.getElementById("music");
 
-/* TOAST */
+/* DYNAMIC THEME SYSTEM CONTROLLER */
+function setTheme(themeName) {
+    document.body.classList.remove("light-mode", "glass-mode");
+    document.querySelectorAll(".mode-pill").forEach(pill => pill.classList.remove("active"));
+    
+    if (themeName === "light") {
+        document.body.classList.add("light-mode");
+        document.getElementById("lightPill").classList.add("active");
+        showToast("LIGHT THEME ACTIVATED");
+    } else if (themeName === "glass") {
+        document.body.classList.add("glass-mode");
+        document.getElementById("glassPill").classList.add("active");
+        showToast("GLASSMORPHISM ACTIVE");
+    } else {
+        document.getElementById("darkPill").classList.add("active");
+        showToast("DARK THEME ACTIVATED");
+    }
+}
+
+/* VISUAL ALERTS & EFFECTS */
 function showToast(text){
-let t=document.getElementById("toast");
-t.innerText=text;
-t.classList.add("show");
-setTimeout(()=>t.classList.remove("show"),1200);
+    let t = document.getElementById("toast");
+    t.innerText = text;
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 1500);
 }
 
-/* FLASH */
 function flash(){
-let f=document.getElementById("flash");
-f.classList.add("active");
-setTimeout(()=>f.classList.remove("active"),150);
+    let f = document.getElementById("flash");
+    f.classList.add("active");
+    setTimeout(() => f.classList.remove("active"), 150);
 }
 
-/* ULTRA */
-function setUltra(){
-mode="ultra";
-document.body.classList.remove("low","glitch");
-document.body.classList.add("ultra");
-
-document.getElementById("status").innerText="⚡ ULTRA ACTIVE";
-showToast("ULTRA ON");
-document.getElementById("sfxMode").play().catch(()=>{});
-flash();
-}
-
-/* LOW */
-function setLow(){
-mode="low";
-document.body.classList.remove("ultra","glitch");
-document.body.classList.add("low");
-
-document.getElementById("status").innerText="LOW ACTIVE";
-showToast("LOW ON");
-document.getElementById("sfxMode").play().catch(()=>{});
-flash();
-}
-
-/* MUSIC */
-let music=document.getElementById("music");
-let on=false;
-
+/* AUDIO MANAGER CONTROL SYSTEM */
 function toggleMusic(){
-if(!on){music.play();on=true;}
-else{music.pause();on=false;}
+    const btnContent = document.getElementById("ambientMuteBtn");
+    
+    if(!isMusicPlaying){
+        music.play().then(() => {
+            isMusicPlaying = true;
+            btnContent.innerHTML = `<span>AMBIENT // ON</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
+            showToast("AMBIENT MUSIC PLAYING");
+        }).catch(() => {
+            showToast("AUDIO BLOCKED BY BROWSER");
+        });
+    } else {
+        music.pause();
+        isMusicPlaying = false;
+        btnContent.innerHTML = `<span>AMBIENT // MUTE</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
+        showToast("AMBIENT MUSIC MUTED");
+    }
 }
 
-/* WARP */
+/* WEB REDIRECT TRANSITION HANDLER */
 function go(type){
-let link="";
-if(type==="wa") link="https://wa.me/6282241102321";
-if(type==="ig") link="https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv";
-if(type==="tt") link="https://tiktok.com/@kayyneee";
+    let link = "";
+    if(type === "wa") link = "https://wa.me/6282241102321";
+    if(type === "ig") link = "https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv";
+    if(type === "tt") link = "https://tiktok.com/@kayyneee";
 
-document.getElementById("warp").classList.add("active");
-document.getElementById("sfxWarp").play().catch(()=>{});
+    document.getElementById("warp").classList.add("active");
+    document.getElementById("sfxWarp").play().catch(()=>{});
 
-setTimeout(()=>window.location.href=link,1200);
+    setTimeout(() => window.location.href = link, 1200);
 }
 
-/* VOICE AI */
+/* VOICE SYNTHESIS ACCESSIBILITY AI */
 function voiceAI(){
-let msg=new SpeechSynthesisUtterance("Welcome to my media sosial");
-speechSynthesis.speak(msg);
+    let msg = new SpeechSynthesisUtterance("Welcome to my media sosial");
+    speechSynthesis.speak(msg);
 }
 
-/* VOID MODE */
-document.getElementById("profile").onclick=()=>{
-
-tapProfile++;
-
-if(tapProfile>=5 && !isVoid){
-isVoid=true;
-tapProfile=0;
-mode="void";
-
-document.body.classList.add("glitch");
-document.body.classList.remove("ultra","low");
-
-showToast("VOID MODE ON");
-return;
-}
-
-if(tapProfile>=5 && isVoid){
-isVoid=false;
-tapProfile=0;
-mode="ultra";
-
-document.body.classList.remove("glitch");
-document.body.classList.add("ultra");
-
-showToast("BACK TO NORMAL");
-return;
-}
+/* SECRETS / FUN ACTIONS (VOID SYSTEM TARGET) */
+document.getElementById("profile").onclick = () => {
+    tapProfile++;
+    if(tapProfile >= 5 && !isVoid){
+        isVoid = true;
+        tapProfile = 0;
+        document.body.classList.add("glitch");
+        showToast("VOID CORRUPTION INTERCEPTED");
+        return;
+    }
+    if(tapProfile >= 5 && isVoid){
+        isVoid = false;
+        tapProfile = 0;
+        document.body.classList.remove("glitch");
+        showToast("BACK TO NORMAL");
+        return;
+    }
 };
 
-/* 🔥 FIX WARP STUCK (INI YANG KAMU MAU) */
+/* REDIRECT RESETS ON VISIBILITY UPDATES */
 function resetWarp(){
-document.getElementById("warp").classList.remove("active");
+    document.getElementById("warp").classList.remove("active");
+}
+
+/* SMART BACKGROUND PAUSE INTEGRATION */
+function pauseAudioOnLeave() {
+    music.pause();
+}
+
+function resumeAudioOnReturn() {
+    if (isMusicPlaying) {
+        music.play().catch(()=>{});
+    }
 }
 
 document.addEventListener("visibilitychange", () => {
-if(!document.hidden) resetWarp();
+    if(!document.hidden) {
+        resetWarp();
+        resumeAudioOnReturn();
+    } else {
+        pauseAudioOnLeave();
+    }
 });
 
-window.addEventListener("focus", resetWarp);
+window.addEventListener("focus", () => {
+    resetWarp();
+    resumeAudioOnReturn();
+});
+window.addEventListener("blur", pauseAudioOnLeave);
 window.addEventListener("pageshow", resetWarp);
-
 </script>
 
 </body>

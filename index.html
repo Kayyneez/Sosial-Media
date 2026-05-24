@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kayyne ORIGIN OS 6</title>
+<title>Kayyne OS V8</title>
 
 <style>
 
@@ -18,7 +18,7 @@ transition:.4s;
 
 /* MODE */
 body.low{filter:brightness(.7) contrast(.9);}
-body.ultra{filter:brightness(1.1) contrast(1.2);}
+body.ultra{filter:brightness(1.15) contrast(1.2);}
 
 /* SPACE */
 .space{
@@ -35,7 +35,7 @@ filter:blur(25px);
 position:fixed;inset:0;
 background:radial-gradient(2px 2px at 20px 30px,#fff,transparent);
 background-size:300px 300px;
-animation:move 100s linear infinite;
+animation:move 120s linear infinite;
 opacity:.4;
 }
 @keyframes move{to{transform:translateY(-1200px);}}
@@ -62,7 +62,6 @@ border-radius:50%;
 border:3px solid cyan;
 box-shadow:0 0 20px cyan;
 margin-bottom:10px;
-cursor:pointer;
 }
 
 /* LINKS */
@@ -85,26 +84,6 @@ pointer-events:none;
 }
 .meteor.active{animation:boom .4s;}
 @keyframes boom{50%{opacity:1;}}
-
-/* LOADER */
-#intro{
-position:fixed;inset:0;
-background:black;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:9999;
-}
-
-.portal{
-width:120px;height:120px;
-border-radius:50%;
-border:2px solid cyan;
-border-top:2px solid magenta;
-animation:spin 1s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg);}}
 
 /* CMD */
 #cmd{
@@ -132,32 +111,49 @@ outline:none;
 border-radius:6px;
 }
 
-/* BUTTONS */
-button{
+/* 🔥 TOP BUTTONS */
+.topBtn{
 position:fixed;
-bottom:20px;
-padding:10px;
-border:none;
-border-radius:10px;
-cursor:pointer;
 z-index:9999;
+border:none;
+cursor:pointer;
 }
 
-#modeBtn{left:20px;}
-#soundBtn{right:20px;}
-
-/* ROCKET CMD BUTTON */
-#rocket{
-position:fixed;
-top:15px;
-right:15px;
-background:#ff0;
-border:none;
-padding:10px;
+/* ROCKET CMD BUTTON (bunder kecil) */
+#rocketBtn{
+top:12px;
+right:12px;
+width:38px;
+height:38px;
 border-radius:50%;
-cursor:pointer;
+background:#111;
+color:white;
+box-shadow:0 0 10px cyan;
 font-size:16px;
-z-index:9999;
+}
+
+/* SOUND BUTTON */
+#soundBtn{
+top:12px;
+left:12px;
+padding:8px 10px;
+border-radius:999px;
+background:#111;
+color:white;
+box-shadow:0 0 10px magenta;
+font-size:14px;
+}
+
+/* MODE TOGGLE */
+#modeBtn{
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+padding:10px 15px;
+border-radius:999px;
+background:#111;
+color:white;
+box-shadow:0 0 10px #00ffff;
 }
 
 </style>
@@ -165,13 +161,14 @@ z-index:9999;
 
 <body class="ultra">
 
-<!-- SPACE -->
 <div class="space"></div>
 <div class="stars"></div>
+
 <div class="meteor" id="meteor"></div>
 
-<!-- ROCKET CMD BUTTON -->
-<button id="rocket" onclick="toggleCMD()">🚀</button>
+<!-- TOP UI -->
+<button id="soundBtn" class="topBtn" onclick="toggleSound()">🎵</button>
+<button id="rocketBtn" class="topBtn" onclick="toggleCMD()">🚀</button>
 
 <!-- UI -->
 <div class="container">
@@ -182,9 +179,12 @@ z-index:9999;
 
 <a class="link" href="https://wa.me/6282241102321">📞 My Wangsaff</a>
 <a class="link" href="https://instagram.com/too.dika">📸 My IG</a>
-<a class="link" href="https://tiktok.com/@kayyneee">🔮 My Tiktok</a>
+<a class="link" href="https://tiktok.com/@kayyneee">🔮 My TikTok</a>
 
 </div>
+
+<!-- MODE BUTTON -->
+<button id="modeBtn" onclick="toggleMode()">⚡ / 🪐</button>
 
 <!-- CMD -->
 <div id="cmd">
@@ -192,19 +192,14 @@ z-index:9999;
 <input id="cmdInput" placeholder="/help">
 </div>
 
-<!-- BUTTONS -->
-<button id="modeBtn" onclick="toggleMode()">MODE</button>
-<button id="soundBtn" onclick="toggleSound()">SOUND</button>
-
 <script>
 
-/* ================= AUDIO ================= */
+/* AUDIO */
 const AudioEngine={
 ctx:new (window.AudioContext||window.webkitAudioContext)(),
 master:null,
-ambient:null,
 enabled:true,
-unlocked:false,
+ambient:null,
 
 init(){
 this.master=this.ctx.createGain();
@@ -213,45 +208,32 @@ this.master.connect(this.ctx.destination);
 },
 
 unlock(){
-if(this.unlocked) return;
 this.ctx.resume();
 this.startAmbient();
-this.unlocked=true;
 },
 
-beep(type){
-
+beep(f=440){
 if(!this.enabled) return;
-
-let f=440;
-if(type==="meteor")f=120;
-if(type==="unlock")f=900;
-if(type==="click")f=600;
 
 const o=this.ctx.createOscillator();
 const g=this.ctx.createGain();
 
-o.type="sine";
 o.frequency.value=f;
-g.gain.value=0.3;
+g.gain.value=0.25;
 
 o.connect(g);
 g.connect(this.master);
-
-g.gain.setValueAtTime(0.3,this.ctx.currentTime);
-g.gain.exponentialRampToValueAtTime(0.001,this.ctx.currentTime+0.2);
 
 o.start();
 o.stop(this.ctx.currentTime+0.2);
 },
 
 startAmbient(){
-if(this.ambient || !this.enabled) return;
+if(this.ambient) return;
 
 const o=this.ctx.createOscillator();
 const g=this.ctx.createGain();
 
-o.type="sine";
 o.frequency.value=55;
 g.gain.value=0.05;
 
@@ -271,34 +253,27 @@ this.ambient=null;
 
 toggle(){
 this.enabled=!this.enabled;
-if(!this.enabled){
-this.stopAmbient();
-}else{
-this.startAmbient();
-}
-alert(this.enabled?"SOUND ON":"SOUND OFF");
+if(!this.enabled) this.stopAmbient();
+else this.startAmbient();
 }
 };
 
 AudioEngine.init();
 
-/* UNLOCK AUDIO */
+/* unlock audio */
 document.body.addEventListener("click",()=>AudioEngine.unlock(),{once:true});
 
 /* MODE */
 function toggleMode(){
-
 if(document.body.classList.contains("ultra")){
 document.body.classList.remove("ultra");
 document.body.classList.add("low");
-clearInterval(window.meteorLoop);
 AudioEngine.stopAmbient();
-document.querySelector(".stars").style.opacity="0.1";
 }else{
 document.body.classList.add("ultra");
 document.body.classList.remove("low");
 startMeteor();
-document.querySelector(".stars").style.opacity="0.4";
+AudioEngine.startAmbient();
 }
 }
 
@@ -309,37 +284,27 @@ AudioEngine.toggle();
 
 /* METEOR */
 function startMeteor(){
-
-clearInterval(window.meteorLoop);
-
-window.meteorLoop=setInterval(()=>{
-
+clearInterval(window.meteor);
+window.meteor=setInterval(()=>{
 if(!document.body.classList.contains("ultra")) return;
-
-AudioEngine.beep("meteor");
-
+AudioEngine.beep(120);
 let m=document.getElementById("meteor");
 m.classList.add("active");
 setTimeout(()=>m.classList.remove("active"),400);
-
-},3000);
+},3500);
 }
 
 /* CMD */
-let cmdOpen=false;
+let open=false;
 const cmd=document.getElementById("cmd");
 const input=document.getElementById("cmdInput");
 const log=document.getElementById("cmdLog");
 
 function toggleCMD(){
-cmdOpen=!cmdOpen;
-cmd.style.display=cmdOpen?"block":"none";
-if(cmdOpen) input.focus();
+open=!open;
+cmd.style.display=open?"block":"none";
+if(open) input.focus();
 }
-
-document.addEventListener("keydown",(e)=>{
-if(e.key==="c") toggleCMD();
-});
 
 input.addEventListener("keydown",(e)=>{
 if(e.key!=="Enter") return;
@@ -347,81 +312,53 @@ if(e.key!=="Enter") return;
 let v=input.value.toLowerCase();
 input.value="";
 
-if(v==="/help") log.innerText="/ultra /low /sound /meteor /god /void /reset";
+if(v==="/help") log.innerText="/ultra /low /sound /meteor /god";
 
 else if(v==="/ultra"){
 document.body.classList.add("ultra");
 document.body.classList.remove("low");
 AudioEngine.startAmbient();
-startMeteor();
-log.innerText="ULTRA MODE";
+log.innerText="ULTRA ⚡";
 }
 
 else if(v==="/low"){
 document.body.classList.add("low");
 document.body.classList.remove("ultra");
 AudioEngine.stopAmbient();
-log.innerText="LOW MODE";
+log.innerText="LOW 🪐";
 }
 
 else if(v==="/sound"){
 AudioEngine.toggle();
-log.innerText="SOUND TOGGLE";
-}
-
-else if(v==="/meteor"){
-AudioEngine.beep("meteor");
-log.innerText="METEOR BURST";
+log.innerText="SOUND 🎵";
 }
 
 else if(v==="/god"){
-AudioEngine.beep("unlock");
 document.body.style.filter="hue-rotate(180deg)";
+AudioEngine.beep(900);
 log.innerText="GOD MODE";
 }
 
-else if(v==="/void"){
-document.body.style.filter="invert(1)";
-log.innerText="VOID MODE";
-}
-
-else if(v==="/reset"){
-location.reload();
-}
-
 else{
-log.innerText="UNKNOWN COMMAND";
+log.innerText="UNKNOWN";
 }
 });
 
-/* PROFILE EASTER EGG */
+/* PROFILE EGG */
 let p=0;
 document.getElementById("profile").onclick=()=>{
 p++;
 if(p===5){
-AudioEngine.beep("unlock");
-document.body.style.filter="contrast(1.5)";
-alert("GOD PROFILE MODE");
-}
-};
-
-/* ROCKET EASTER EGG */
-let r=0;
-document.getElementById("rocket").onclick=()=>{
-r++;
-if(r===7){
-AudioEngine.beep("unlock");
-document.body.style.filter="hue-rotate(90deg)";
-alert("SECRET SPACE MODE");
+AudioEngine.beep(900);
+alert("SECRET GOD MODE");
 }
 };
 
 /* START */
 setTimeout(()=>{
-document.getElementById("intro").style.display="none";
 AudioEngine.unlock();
 startMeteor();
-},3000);
+},2500);
 
 </script>
 

@@ -214,8 +214,8 @@ if(l) l.remove();
 });
 
 /* STATE */
-let ultraGraphic=false;
-let lowMode=true;
+let ultraGraphic=true;
+let lowMode=false;
 
 /* GRAPHIC TOGGLE */
 function toggleGraphic(){
@@ -310,10 +310,12 @@ tap++;
 
 if(tap===10){
 document.body.classList.add("glitch");
-alert("⚡ GLITCH MODE");
-}
 
-});
+setTimeout(()=>{
+document.body.classList.remove("glitch");
+tap=0;
+},5000);
+}
 
 /* START */
 startMeteor();

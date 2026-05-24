@@ -124,6 +124,7 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 z-index:99999;
+
 opacity:0;
 pointer-events:none;
 transition:.3s;
@@ -135,7 +136,8 @@ pointer-events:auto;
 }
 
 .warpPortal{
-width:120px;height:120px;
+width:120px;
+height:120px;
 border-radius:50%;
 border:3px solid cyan;
 border-top:3px solid magenta;
@@ -183,7 +185,6 @@ font-size:14px;
 opacity:0;
 transition:.3s;
 z-index:999999;
-pointer-events:none;
 }
 
 #toast.show{
@@ -265,82 +266,10 @@ document.getElementById("loader").remove();
 },1200);
 });
 
-/* MODE */
-let lastmode = "ultra";
-let tapProfile = 0;
-let isVoid = false;
-
-/* TOAST */
-function showToast(text){
-let t=document.getElementById("toast");
-t.innerText=text;
-t.classList.add("show");
-setTimeout(()=>t.classList.remove("show"),1200);
-}
-
-/* FLASH */
-function flash(){
-let f=document.getElementById("flash");
-f.classList.add("active");
-setTimeout(()=>f.classList.remove("active"),150);
-}
-
-/* ULTRA */
-function setUltra(){
-mode="ultra";
-document.body.classList.remove("low","glitch");
-document.body.classList.add("ultra");
-
-document.getElementById("status").innerText="⚡ ULTRA GRAPHIC ACTIVE";
-showToast("⚡ ULTRA ON");
-document.getElementById("sfxMode").play();
-flash();
-}
-
-/* LOW */
-function setLow(){
-mode="low";
-document.body.classList.remove("ultra","glitch");
-document.body.classList.add("low");
-
-document.getElementById("status").innerText="🪐 LOW MODE ACTIVE";
-showToast("🪐 LOW ON");
-document.getElementById("sfxMode").play();
-flash();
-}
-
-/* MUSIC */
-let music=document.getElementById("music");
-let on=false;
-
-function toggleMusic(){
-if(!on){music.play();on=true;}
-else{music.pause();on=false;}
-}
-
-/* WARP */
-function go(type){
-let link="";
-if(type==="wa") link="https://wa.me/6282241102321";
-if(type==="ig") link="https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv";
-if(type==="tt") link="https://tiktok.com/@kayyneee";
-
-document.getElementById("warp").classList.add("active");
-document.getElementById("sfxWarp").play();
-
-setTimeout(()=>window.location.href=link,1200);
-
-/* LOADER */
-window.addEventListener("load",()=>{
-setTimeout(()=>{
-document.getElementById("loader").remove();
-},1200);
-});
-
-/* MODE STATE */
-let mode = "ultra";
-let tapProfile = 0;
-let isVoid = false;
+/* STATE */
+let mode="ultra";
+let tapProfile=0;
+let isVoid=false;
 
 /* TOAST */
 function showToast(text){
@@ -393,14 +322,17 @@ else{music.pause();on=false;}
 /* WARP */
 function go(type){
 let link="";
+
 if(type==="wa") link="https://wa.me/6282241102321";
-if(type==="ig") link="https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv";
+if(type==="ig") link="https://instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv";
 if(type==="tt") link="https://tiktok.com/@kayyneee";
 
 document.getElementById("warp").classList.add("active");
 document.getElementById("sfxWarp").play().catch(()=>{});
 
-setTimeout(()=>window.location.href=link,1200);
+setTimeout(()=>{
+window.location.href=link;
+},1200);
 }
 
 /* VOICE AI */
@@ -409,16 +341,16 @@ let msg=new SpeechSynthesisUtterance("Welcome to my media sosial wok");
 speechSynthesis.speak(msg);
 }
 
-/* VOID MODE */
-document.getElementById("profile").onclick = () => {
+/* VOID MODE (5 TAP PROFILE) */
+document.getElementById("profile").onclick=()=>{
 
 tapProfile++;
 
-if (tapProfile >= 5 && !isVoid) {
-isVoid = true;
-tapProfile = 0;
+if(tapProfile>=5 && !isVoid){
+isVoid=true;
+tapProfile=0;
+mode="void";
 
-mode = "void";
 document.body.classList.add("glitch");
 document.body.classList.remove("ultra","low");
 
@@ -426,11 +358,11 @@ showToast("🌀 VOID MODE ON");
 return;
 }
 
-if (tapProfile >= 5 && isVoid) {
-isVoid = false;
-tapProfile = 0;
+if(tapProfile>=5 && isVoid){
+isVoid=false;
+tapProfile=0;
+mode="ultra";
 
-mode = "ultra";
 document.body.classList.remove("glitch");
 document.body.classList.add("ultra");
 

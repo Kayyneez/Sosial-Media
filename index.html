@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kayyne Origin Os</title>
+<title>Kaynne Origin Os</title>
 
 <style>
 
@@ -17,19 +17,15 @@ transition:.3s;
 }
 
 /* LOW MODE */
-body.low{
-filter:brightness(.7) contrast(.9);
-}
+body.low{filter:brightness(.7) contrast(.9);}
+body.low .stars{animation:none;opacity:.1;}
+body.low .meteor{display:none;}
 
-/* ULTRA GRAPHIC MODE */
-body.ultra{
-filter:brightness(1.2) contrast(1.2);
-}
+/* ULTRA MODE */
+body.ultra{filter:brightness(1.2) contrast(1.2);}
 
-/* GLITCH MODE */
-body.glitch{
-animation:glitch .2s infinite;
-}
+/* GLITCH */
+body.glitch{animation:glitch .2s infinite;}
 
 @keyframes glitch{
 0%{filter:hue-rotate(0deg) contrast(1.5);}
@@ -39,21 +35,19 @@ animation:glitch .2s infinite;
 
 /* LOADER */
 #loader{
-position:fixed;
-inset:0;
+position:fixed;inset:0;
 background:black;
 display:flex;
-flex-direction:column;
 justify-content:center;
 align-items:center;
+flex-direction:column;
 z-index:99999;
 color:white;
-gap:18px;
+gap:15px;
 }
 
 .portal{
-width:90px;
-height:90px;
+width:90px;height:90px;
 border-radius:50%;
 border:3px solid cyan;
 border-top:3px solid magenta;
@@ -62,35 +56,32 @@ animation:spin 1s linear infinite;
 box-shadow:0 0 20px cyan;
 }
 
-@keyframes spin{
-to{transform:rotate(360deg);}
-}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-/* GALAXY */
+/* SPACE */
 .space{
-position:fixed;
-inset:0;
+position:fixed;inset:0;
 background:
 radial-gradient(circle at 20% 30%,#ff00aa33,transparent 40%),
 radial-gradient(circle at 70% 60%,#00ffff33,transparent 40%),
 radial-gradient(circle at 50% 50%,#6a00ff22,transparent 60%);
 filter:blur(25px);
 }
-  
+
 /* STARS */
 .stars{
-position:fixed;
-inset:0;
+position:fixed;inset:0;
 background:radial-gradient(2px 2px at 20px 30px,#fff,transparent);
 background-size:300px 300px;
 animation:move 120s linear infinite;
 opacity:.4;
 }
+
 @keyframes move{
 to{transform:translateY(-1200px);}
 }
 
-/* PROFILE */
+/* UI */
 .container{
 position:absolute;
 top:50%;left:50%;
@@ -105,8 +96,7 @@ border-radius:20px;
 }
 
 .profile{
-width:90px;
-height:90px;
+width:90px;height:90px;
 border-radius:50%;
 border:3px solid cyan;
 box-shadow:0 0 20px cyan;
@@ -122,6 +112,13 @@ border-radius:999px;
 background:rgba(255,255,255,0.08);
 color:white;
 text-decoration:none;
+cursor:pointer; /* <-- TAMBAHAN INI */
+transition:.2s;
+}
+
+.link:hover{
+transform:scale(1.05);
+background:rgba(0,255,255,0.15);
 }
 
 /* METEOR */
@@ -132,15 +129,11 @@ background:radial-gradient(circle,orange,transparent);
 opacity:0;
 pointer-events:none;
 }
-.meteor.active{
-animation:boom .4s;
-}
 
-@keyframes boom{
-50%{opacity:1;}
-}
+.meteor.active{animation:boom .4s;}
+@keyframes boom{50%{opacity:1;}}
 
-/* BUTTON BAR */
+/* BUTTONS */
 .bottomBar{
 position:fixed;
 bottom:15px;
@@ -160,16 +153,49 @@ color:white;
 cursor:pointer;
 }
 
+/* WARP SCREEN */
+#warpScreen{
+position:fixed;
+inset:0;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:99999;
+opacity:0;
+pointer-events:none;
+transition:.3s;
+}
+
+#warpScreen.active{
+opacity:1;
+pointer-events:auto;
+}
+
+#warpScreen::before{
+content:"";
+width:120px;
+height:120px;
+border-radius:50%;
+border:3px solid cyan;
+border-top:3px solid magenta;
+animation:spin .8s linear infinite;
+box-shadow:0 0 30px cyan;
+}
+
 </style>
 </head>
 
 <body class="ultra">
-  
-  <!-- LOADER -->
+
+<!-- LOADER -->
 <div id="loader">
-  <div class="portal"></div>
-  <h3>ENTERING GALAXY...</h3>
+<div class="portal"></div>
+<h3>ENTERING GALAXY...</h3>
 </div>
+
+<!-- WARP -->
+<div id="warpScreen"></div>
 
 <!-- BACKGROUND -->
 <div class="space"></div>
@@ -180,22 +206,19 @@ cursor:pointer;
 <div class="container">
 
 <img src="profile.jpg" class="profile" id="profile">
-
 <h2>@Kaynne</h2>
 
-<a class="link" href="https://wa.me/6282241102321">📞 My Wangsaff</a>
-<a class="link" href="https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv">📸 My IG</a>
-<a class="link" href="https://tiktok.com/@kayyneee">🔮 My TikTok</a>
+<a class="link" onclick="goTo('wa')">📞 My Wangsaff</a>
+<a class="link" onclick="goTo('ig')">📸 My Ig</a>
+<a class="link" onclick="goTo('tt')">🔮 My TikTok</a>
 
 </div>
 
 <!-- BUTTONS -->
 <div class="bottomBar">
-
-<button class="btn" onclick="toggleGraphic()">⚡ ULTRA</button>
-<button class="btn" onclick="toggleLow()">🪐 LOW</button>
+<button class="btn" onclick="setUltra()">⚡ ULTRA</button>
+<button class="btn" onclick="setLow()">🪐 LOW</button>
 <button class="btn" onclick="toggleMusic()">🎵</button>
-
 </div>
 
 <!-- MUSIC -->
@@ -205,47 +228,24 @@ cursor:pointer;
 
 <script>
 
-/* REMOVE LOADER */
-window.addEventListener("load",()=>{
-setTimeout(()=>{
-let l=document.getElementById("loader");
-if(l) l.remove();
-},2000);
-});
-
 /* STATE */
 let mode="ultra";
-let tapvoid=0;
+let tapVoid=0;
 
-/* GRAPHIC TOGGLE */
-function toggleGraphic(){
-ultraGraphic=!ultraGraphic;
-
-if(ultraGraphic){
+/* ULTRA */
+function setUltra(){
+mode="ultra";
 document.body.classList.add("ultra");
+document.body.classList.remove("low","glitch");
 startMeteor();
-alert("GRAPIC ULTRA ON⚡");
-}else{
-document.body.classList.remove("ultra");
-
-/* 🔥 TAMBAHAN INI */
-stopMeteor();
-
-alert("GRAPIC ULTRA OFF⚡");
-}
 }
 
-/* LOW TOGGLE */
-function toggleLow(){
-lowMode=!lowMode;
-
-if(lowMode){
+/* LOW */
+function setLow(){
+mode="low";
 document.body.classList.add("low");
-alert("GRAPIC LOW ON🪐");
-}else{
-document.body.classList.remove("low");
-alert("GRAPIC LOW OFF🪐");
-}
+document.body.classList.remove("ultra","glitch");
+stopMeteor();
 }
 
 /* MUSIC */
@@ -254,42 +254,53 @@ let play=false;
 
 function toggleMusic(){
 if(!play){
-music.play();
-play=true;
+music.play();play=true;
 }else{
-music.pause();
-play=false;
+music.pause();play=false;
 }
 }
 
-/* set meteor */
-let meteorInterval = null;
+/* METEOR */
+let meteorInterval=null;
 
 function startMeteor(){
 if(meteorInterval) return;
 
-meteorInterval = setInterval(()=>{
+meteorInterval=setInterval(()=>{
+if(mode!=="ultra") return;
 
-if(!ultraGraphic) return;
-
-let m = document.getElementById("meteor");
+let m=document.getElementById("meteor");
 m.classList.add("active");
 
-setTimeout(()=>{
-m.classList.remove("active");
-},400);
+setTimeout(()=>m.classList.remove("active"),400);
 
 },4000);
 }
 
 function stopMeteor(){
 clearInterval(meteorInterval);
-meteorInterval = null;
+meteorInterval=null;
 }
 
-/* 🥚 PROFILE 5x = VOID */
-let p=0;
+/* WARP TRANSITION LINK */
+function goTo(type){
 
+let link="";
+
+if(type==="wa") link="https://wa.me/6282241102321";
+if(type==="ig") link="https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv";
+if(type==="tt") link="https://tiktok.com/@kayyneee";
+
+let warp=document.getElementById("warpScreen");
+warp.classList.add("active");
+
+setTimeout(()=>{
+window.location.href=link;
+},1200);
+
+}
+
+/* VOID MODE (5 TAP PROFILE) */
 document.getElementById("profile").onclick=()=>{
 
 tapVoid++;
@@ -308,32 +319,12 @@ mode="ultra";
 document.body.classList.remove("glitch");
 document.body.classList.add("ultra");
 startMeteor();
-alert("🌌 BACK TO NORMAL (ULTRA)");
+alert("🌌 BACK TO NORMAL");
 tapVoid=0;
 }
 
 };
 
-/* 🥚 BACKGROUND TAP 10x = GLITCH */
-let tap=0;
-
-document.body.addEventListener("click",(e)=>{
-
-if(e.target.tagName==="BUTTON") return;
-
-tap++;
-
-if(tap===10){
-document.body.classList.add("glitch");
-
-setTimeout(()=>{
-document.body.classList.remove("glitch");
-tap=0;
-},5000);
-}
-
-});
-  
 /* START */
 startMeteor();
 

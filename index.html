@@ -383,6 +383,29 @@ return;
 }
 };
 
+/* FIX WARP STUCK SAAT BALIK DARI WA/IG/TT */
+function resetWarp(){
+  let warp = document.getElementById("warp");
+  if (warp) warp.classList.remove("active");
+}
+
+/* kalau user balik ke tab */
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    resetWarp();
+  }
+});
+
+/* kalau user balik ke halaman (mobile Chrome fix) */
+window.addEventListener("focus", () => {
+  resetWarp();
+});
+
+/* safety tambahan (biar gak ke-lock) */
+window.addEventListener("pageshow", () => {
+  resetWarp();
+});
+  
 </script>
 
 </body>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kayyne Origin Os 6</title>
+<title>Kayyne Origin Os</title>
 
 <style>
 
@@ -13,43 +13,31 @@ body{
 height:100vh;
 overflow:hidden;
 background:black;
-transition:.4s;
+transition:.3s;
 }
 
-/* MODE */
-body.low{filter:brightness(.7) contrast(.9);}
-body.ultra{filter:brightness(1.15) contrast(1.2);}
-
-/* LOADER */
-#loader{
-position:fixed;
-inset:0;
-background:black;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:99999;
-color:white;
-gap:18px;
+/* LOW MODE */
+body.low{
+filter:brightness(.7) contrast(.9);
 }
 
-.portal{
-width:90px;
-height:90px;
-border-radius:50%;
-border:3px solid cyan;
-border-top:3px solid magenta;
-border-right:3px solid white;
-animation:spin 1s linear infinite;
-box-shadow:0 0 20px cyan;
+/* ULTRA GRAPHIC MODE */
+body.ultra{
+filter:brightness(1.2) contrast(1.2);
 }
 
-@keyframes spin{
-to{transform:rotate(360deg);}
+/* GLITCH MODE */
+body.glitch{
+animation:glitch .2s infinite;
 }
 
-/* GALAXY */
+@keyframes glitch{
+0%{filter:hue-rotate(0deg) contrast(1.5);}
+50%{filter:hue-rotate(120deg) contrast(2);}
+100%{filter:hue-rotate(240deg) contrast(1.5);}
+}
+
+/* SPACE */
 .space{
 position:fixed;
 inset:0;
@@ -60,6 +48,7 @@ radial-gradient(circle at 50% 50%,#6a00ff22,transparent 60%);
 filter:blur(25px);
 }
 
+/* STARS */
 .stars{
 position:fixed;
 inset:0;
@@ -68,12 +57,15 @@ background-size:300px 300px;
 animation:move 120s linear infinite;
 opacity:.4;
 }
-@keyframes move{to{transform:translateY(-1200px);}}
+@keyframes move{
+to{transform:translateY(-1200px);}
+}
 
-/* PROFILE */
+/* UI */
 .container{
 position:absolute;
-top:50%;left:50%;
+top:50%;
+left:50%;
 transform:translate(-50%,-50%);
 width:320px;
 padding:20px;
@@ -93,17 +85,6 @@ box-shadow:0 0 20px cyan;
 margin-bottom:10px;
 }
 
-/* LINKS */
-.link{
-display:block;
-margin:10px 0;
-padding:12px;
-border-radius:999px;
-background:rgba(255,255,255,0.08);
-color:white;
-text-decoration:none;
-}
-
 /* METEOR */
 .meteor{
 position:fixed;
@@ -112,37 +93,40 @@ background:radial-gradient(circle,orange,transparent);
 opacity:0;
 pointer-events:none;
 }
-.meteor.active{animation:boom .4s;}
-@keyframes boom{50%{opacity:1;}}
+.meteor.active{
+animation:boom .4s;
+}
 
-/* BOTTOM BAR */
+@keyframes boom{
+50%{opacity:1;}
+}
+
+/* BUTTON BAR */
 .bottomBar{
 position:fixed;
 bottom:15px;
 left:50%;
 transform:translateX(-50%);
 display:flex;
-gap:15px;
+gap:10px;
 z-index:9999;
 }
 
 .btn{
 border:none;
-padding:12px 16px;
+padding:12px 14px;
 border-radius:999px;
-cursor:pointer;
-font-size:18px;
 background:#111;
 color:white;
-box-shadow:0 0 10px rgba(0,255,255,0.4);
+cursor:pointer;
 }
 
 </style>
 </head>
 
-<body class="ultra">
-
-<!-- LOADER -->
+<body class="Ultra">
+  
+  <!-- LOADER -->
 <div id="loader">
   <div class="portal"></div>
   <h3>ENTERING GALAXY...</h3>
@@ -156,7 +140,7 @@ box-shadow:0 0 10px rgba(0,255,255,0.4);
 <!-- UI -->
 <div class="container">
 
-<img src="profile.jpg" class="profile">
+<img src="profile.jpg" class="profile" id="profile">
 
 <h2>@Kaynne</h2>
 
@@ -166,38 +150,50 @@ box-shadow:0 0 10px rgba(0,255,255,0.4);
 
 </div>
 
-<!-- BOTTOM BUTTONS -->
+<!-- BUTTONS -->
 <div class="bottomBar">
 
-<button class="btn" onclick="toggleMode()">⚡ / 🪐</button>
+<button class="btn" onclick="toggleGraphic()">⚡ GRAPHIC</button>
+<button class="btn" onclick="toggleLow()">🪐 LOW</button>
 <button class="btn" onclick="toggleMusic()">🎵</button>
 
 </div>
 
-<!-- AUDIO -->
+<!-- MUSIC -->
 <audio id="music" loop>
 <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
 </audio>
 
 <script>
 
-/* REMOVE LOADER */
-window.addEventListener("load",()=>{
-setTimeout(()=>{
-let l=document.getElementById("loader");
-if(l) l.remove();
-},2000);
-});
+/* STATE */
+let ultraGraphic=false;
+let lowMode=true;
 
-/* MODE */
-function toggleMode(){
-if(document.body.classList.contains("ultra")){
-document.body.classList.remove("ultra");
-document.body.classList.add("low");
-}else{
+/* GRAPHIC TOGGLE */
+function toggleGraphic(){
+ultraGraphic=!ultraGraphic;
+
+if(ultraGraphic){
 document.body.classList.add("ultra");
-document.body.classList.remove("low");
 startMeteor();
+alert("⚡ GRAPHIC ON");
+}else{
+document.body.classList.remove("ultra");
+alert("⚡ GRAPHIC OFF");
+}
+}
+
+/* LOW TOGGLE */
+function toggleLow(){
+lowMode=!lowMode;
+
+if(lowMode){
+document.body.classList.add("low");
+alert("🪐 LOW ON");
+}else{
+document.body.classList.remove("low");
+alert("🪐 LOW OFF");
 }
 }
 
@@ -215,17 +211,48 @@ play=false;
 }
 }
 
-/* METEOR */
+/* METEOR (ONLY IF GRAPHIC ON) */
 function startMeteor(){
+
 setInterval(()=>{
-if(!document.body.classList.contains("ultra")) return;
+
+if(!ultraGraphic) return;
 
 let m=document.getElementById("meteor");
 m.classList.add("active");
+
 setTimeout(()=>m.classList.remove("active"),400);
 
 },4000);
 }
+
+/* 🥚 PROFILE 5x = VOID */
+let p=0;
+
+document.getElementById("profile").onclick=()=>{
+p++;
+
+if(p===5){
+document.body.style.filter="invert(1)";
+alert("🪐 VOID MODE");
+}
+};
+
+/* 🥚 BACKGROUND TAP 10x = GLITCH */
+let tap=0;
+
+document.body.addEventListener("click",(e)=>{
+
+if(e.target.tagName==="BUTTON") return;
+
+tap++;
+
+if(tap===10){
+document.body.classList.add("glitch");
+alert("⚡ GLITCH MODE");
+}
+
+});
 
 /* START */
 startMeteor();

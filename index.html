@@ -10,7 +10,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
@@ -33,23 +33,42 @@ body.light-mode .space {
         radial-gradient(circle at 70% 60%, rgba(0, 255, 255, 0.1), transparent 40%);
 }
 body.light-mode .container {
-    background: rgba(255, 255, 255, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    color: #1a1a1a;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #1c1c1e;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+}
+body.light-mode .bio-text {
+    color: #2c2c2e;
+    opacity: 0.85;
 }
 body.light-mode .link {
-    background: rgba(0, 0, 0, 0.05);
-    color: #1a1a1a;
-    border: 1px solid rgba(0, 0, 0, 0.03);
+    background: rgba(0, 0, 0, 0.06);
+    color: #1c1c1e;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+body.light-mode .link:hover {
+    background: rgba(0, 0, 0, 0.1);
 }
 body.light-mode .top-nav-btn {
-    background: rgba(0, 0, 0, 0.05);
-    color: #1a1a1a;
+    background: rgba(0, 0, 0, 0.06);
+    color: #1c1c1e;
+    border: 1px solid rgba(0, 0, 0, 0.04);
 }
 body.light-mode .mode-pill.active {
-    background: #1a1a1a;
+    background: #1c1c1e;
     color: #ffffff;
+}
+
+/* FIX KONTRAS TOMBOL VOICE AI SAAT LIGHT MODE */
+body.light-mode .btn {
+    background: rgba(0, 0, 0, 0.08);
+    color: #1c1c1e !important; /* Memaksa warna tulisan jadi gelap transparan */
+    font-weight: 700;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+body.light-mode .btn:hover {
+    background: rgba(0, 0, 0, 0.15);
 }
 
 /* Glass Theme Override */
@@ -223,7 +242,7 @@ h2 {
 }
 
 .bio-text {
-    font-size: 13px;
+    font-size: 13.5px;
     line-height: 1.6;
     opacity: 0.65;
     margin-bottom: 24px;
@@ -269,13 +288,14 @@ h2 {
 }
 
 .btn {
-    padding: 10px 18px;
+    padding: 12px 24px;
     border-radius: 999px;
     border: none;
     background: rgba(255, 255, 255, 0.08);
     color: white;
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -367,7 +387,7 @@ h2 {
 <div class="top-controls">
     <button class="top-nav-btn" onclick="toggleMusic()" id="ambientMuteBtn">
         <span id="muteIcon" style="display:inline-flex; align-items:center;">
-            <span style="margin-right:5px;">AMBIENT // MUTE</span>
+            <span style="margin-right:5px;">MUSIC // MUTE</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
         </span>
     </button>
@@ -384,10 +404,10 @@ h2 {
         <img src="profile.jpg" class="profile" id="profile" alt="Avatar">
     </div>
     
-    <h2>Hu Tao</h2>
+    <h2>Kayyne</h2>
     
     <div class="bio-text">
-        Hu Tao merupakan Direktur ke-77 Wangsheng Funeral Parlor di Liyue. Ia dikenal sebagai sosok ceria, unik, dan penuh semangat, dengan kepribadian yang mampu membawa suasana hangat bagi orang-orang di sekitarnya.
+        Masha Adalah bini gua, yang dimana dia sangat baik hati, lemah lembut dan penyayang, yang membuat gua jatuh cinta
     </div>
 
     <a class="link" onclick="go('wa')">
@@ -475,16 +495,16 @@ function toggleMusic(){
     if(!isMusicPlaying){
         music.play().then(() => {
             isMusicPlaying = true;
-            btnContent.innerHTML = `<span>AMBIENT // ON</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
-            showToast("AMBIENT MUSIC PLAYING");
+            btnContent.innerHTML = `<span>MUSIC // ON</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
+            showToast("MUSIC PLAYING");
         }).catch(() => {
             showToast("AUDIO BLOCKED BY BROWSER");
         });
     } else {
         music.pause();
         isMusicPlaying = false;
-        btnContent.innerHTML = `<span>AMBIENT // MUTE</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
-        showToast("AMBIENT MUSIC MUTED");
+        btnContent.innerHTML = `<span>MUSIC // MUTE</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
+        showToast("MUSIC MUTED");
     }
 }
 
@@ -560,4 +580,4 @@ window.addEventListener("pageshow", resetWarp);
 </script>
 
 </body>
-</html>
+    </html>

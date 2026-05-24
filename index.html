@@ -6,7 +6,6 @@
 <title>Kaynne Origin OS</title>
 
 <style>
-
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
 
 body{
@@ -16,15 +15,9 @@ background:black;
 transition:.3s;
 }
 
-/* LOW MODE */
+/* MODE */
 body.low{filter:brightness(.7) contrast(.9);}
-body.low .stars{animation:none;opacity:.1;}
-body.low .meteor{display:none;}
-
-/* ULTRA MODE */
 body.ultra{filter:brightness(1.2) contrast(1.2);}
-
-/* GLITCH */
 body.glitch{animation:glitch .2s infinite;}
 
 @keyframes glitch{
@@ -33,9 +26,35 @@ body.glitch{animation:glitch .2s infinite;}
 100%{filter:hue-rotate(240deg) contrast(1.5);}
 }
 
-/* SPACE */
-.space{
+/* LOADER */
+#loader{
 position:fixed;inset:0;
+background:black;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:99999;
+color:white;
+}
+
+.portal{
+width:90px;height:90px;
+border-radius:50%;
+border:3px solid cyan;
+border-top:3px solid magenta;
+animation:spin 1s linear infinite;
+box-shadow:0 0 20px cyan;
+}
+
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* SPACE */
+.space,.stars{
+position:fixed;inset:0;
+}
+
+.space{
 background:
 radial-gradient(circle at 20% 30%,#ff00aa33,transparent 40%),
 radial-gradient(circle at 70% 60%,#00ffff33,transparent 40%),
@@ -43,18 +62,14 @@ radial-gradient(circle at 50% 50%,#6a00ff22,transparent 60%);
 filter:blur(25px);
 }
 
-/* STARS */
 .stars{
-position:fixed;inset:0;
 background:radial-gradient(2px 2px at 20px 30px,#fff,transparent);
 background-size:300px 300px;
 animation:move 120s linear infinite;
 opacity:.4;
 }
 
-@keyframes move{
-to{transform:translateY(-1200px);}
-}
+@keyframes move{to{transform:translateY(-1200px);}}
 
 /* UI */
 .container{
@@ -79,7 +94,6 @@ margin-bottom:10px;
 cursor:pointer;
 }
 
-/* LINKS */
 .link{
 display:block;
 margin:10px 0;
@@ -91,24 +105,42 @@ text-decoration:none;
 cursor:pointer;
 transition:.2s;
 }
+.link:hover{transform:scale(1.05);}
 
-.link:hover{
-transform:scale(1.05);
-background:rgba(0,255,255,0.15);
-}
+/* WARP */
+#warp{
+position:fixed;inset:0;
+background:black;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:99999;
 
-/* METEOR */
-.meteor{
-position:fixed;
-inset:0;
-background:radial-gradient(circle,orange,transparent);
 opacity:0;
 pointer-events:none;
+transition:.3s;
 }
-.meteor.active{animation:boom .4s;}
-@keyframes boom{50%{opacity:1;}}
 
-/* BUTTONS */
+#warp.active{opacity:1;pointer-events:auto;}
+
+.warpPortal{
+width:120px;height:120px;
+border-radius:50%;
+border:3px solid cyan;
+border-top:3px solid magenta;
+animation:spin .5s linear infinite;
+box-shadow:0 0 40px cyan;
+}
+
+#warpText{
+color:white;
+margin-top:15px;
+font-size:14px;
+opacity:.8;
+}
+
+/* BUTTON */
 .bottomBar{
 position:fixed;
 bottom:15px;
@@ -116,98 +148,16 @@ left:50%;
 transform:translateX(-50%);
 display:flex;
 gap:10px;
-z-index:9999;
 }
 
 .btn{
-border:none;
-padding:12px 14px;
+padding:10px 14px;
 border-radius:999px;
+border:none;
 background:#111;
 color:white;
 cursor:pointer;
 }
-
-/* WARP SCREEN */
-#warpScreen{
-position:fixed;
-inset:0;
-background:black;
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:99999;
-opacity:0;
-pointer-events:none;
-transition:.3s;
-}
-
-#warpScreen.active{
-opacity:1;
-pointer-events:auto;
-}
-
-#warpScreen::before{
-content:"";
-width:120px;height:120px;
-border-radius:50%;
-border:3px solid cyan;
-border-top:3px solid magenta;
-animation:spin .8s linear infinite;
-box-shadow:0 0 30px cyan;
-}
-
-.portal{
-animation:spin 1s linear infinite;
-}
-
-@keyframes spin{to{transform:rotate(360deg);}}
-
-/* LOADER */
-#loader{
-position:fixed;
-inset:0;
-background:black;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:99999;
-color:white;
-gap:15px;
-overflow:hidden;
-}
-
-.loaderPortal{
-width:110px;height:110px;
-border-radius:50%;
-border:3px solid cyan;
-border-top:3px solid magenta;
-border-right:3px solid white;
-animation:spin 1s linear infinite, pulse 1.2s ease-in-out infinite;
-box-shadow:0 0 30px cyan;
-}
-
-@keyframes pulse{
-0%{transform:scale(1);}
-50%{transform:scale(1.2);}
-100%{transform:scale(1);}
-}
-
-.particle{
-position:absolute;
-width:4px;
-height:4px;
-background:white;
-border-radius:50%;
-animation:fly 1.4s linear forwards;
-}
-
-@keyframes fly{
-0%{transform:translate(0,0);opacity:1;}
-100%{transform:translate(var(--x), var(--y)) scale(0);opacity:0;}
-}
-
 </style>
 </head>
 
@@ -215,17 +165,20 @@ animation:fly 1.4s linear forwards;
 
 <!-- LOADER -->
 <div id="loader">
-<div class="loaderPortal"></div>
-<h3>ENTERING GALAXY...</h3>
+<div class="portal"></div>
+<div>ENTERING GALAXY...</div>
 </div>
 
 <!-- WARP -->
-<div id="warpScreen"></div>
+<div id="warp">
+<div class="warpPortal"></div>
+<div id="warpText">tunggu sebentar...</div>
+</div>
 
 <!-- BACKGROUND -->
 <div class="space"></div>
 <div class="stars"></div>
-<div class="meteor" id="meteor"></div>
+<canvas id="meteor"></canvas>
 
 <!-- UI -->
 <div class="container">
@@ -233,163 +186,129 @@ animation:fly 1.4s linear forwards;
 <img src="profile.jpg" class="profile" id="profile">
 <h2>@Kaynne</h2>
 
-<a class="link" onclick="goTo('wa')">📞 WhatsApp</a>
-<a class="link" onclick="goTo('ig')">📸 Instagram</a>
-<a class="link" onclick="goTo('tt')">🔮 TikTok</a>
+<a class="link" onclick="go('wa')">📞 My WhatsApp</a>
+<a class="link" onclick="go('ig')">📸 My Instagram</a>
+<a class="link" onclick="go('tt')">🔮 My TikTok</a>
+
+<button class="btn" onclick="voiceAI()">🎤 Voice AI</button>
 
 </div>
 
-<!-- BUTTONS -->
+<!-- BUTTON -->
 <div class="bottomBar">
 <button class="btn" onclick="setUltra()">⚡ ULTRA</button>
 <button class="btn" onclick="setLow()">🪐 LOW</button>
 <button class="btn" onclick="toggleMusic()">🎵</button>
 </div>
 
-<!-- MUSIC -->
+<!-- AUDIO -->
 <audio id="music" loop>
 <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
 </audio>
 
-<!-- WARP SOUND -->
-<audio id="warpSound">
-<source src="https://www.soundjay.com/mechanical/sounds/warp-01.mp3">
-</audio>
+<audio id="sfxWarp" src="https://actions.google.com/sounds/v1/transportation/airplane_takeoff.ogg"></audio>
+<audio id="sfxClick" src="https://actions.google.com/sounds/v1/ui/click.ogg"></audio>
 
 <script>
 
-let mode="ultra";
-let tapVoid=0;
-
-/* LOADER */
-function createParticles(){
-const loader=document.getElementById("loader");
-
-for(let i=0;i<45;i++){
-const p=document.createElement("div");
-p.className="particle";
-
-const angle=Math.random()*Math.PI*2;
-const dist=Math.random()*250;
-
-p.style.setProperty("--x",Math.cos(angle)*dist+"px");
-p.style.setProperty("--y",Math.sin(angle)*dist+"px");
-
-p.style.left="50%";
-p.style.top="50%";
-
-loader.appendChild(p);
-setTimeout(()=>p.remove(),1400);
-}
-}
-
-function hideLoader(){
+/* LOADER FIX */
+window.addEventListener("load",()=>{
 setTimeout(()=>{
-
-const s=document.getElementById("warpSound");
-if(s){s.volume=0.5;s.play().catch(()=>{});}
-
-createParticles();
-
-const l=document.getElementById("loader");
-if(l){
-l.style.transition="1s";
-l.style.opacity="0";
-l.style.transform="scale(1.4)";
-setTimeout(()=>l.remove(),900);
-}
-
-},1800);
-}
-
-window.addEventListener("load",hideLoader);
+document.getElementById("loader").remove();
+startMeteor();
+},1500);
+});
 
 /* MODE */
+let mode="ultra";
+
+/* ULTRA */
 function setUltra(){
 mode="ultra";
 document.body.classList.add("ultra");
 document.body.classList.remove("low","glitch");
-stopMeteor();startMeteor();
 }
 
+/* LOW */
 function setLow(){
 mode="low";
 document.body.classList.add("low");
 document.body.classList.remove("ultra","glitch");
-stopMeteor();
 }
 
 /* MUSIC */
 let music=document.getElementById("music");
-let play=false;
+let musicOn=false;
 
 function toggleMusic(){
-if(!play){music.play();play=true;}
-else{music.pause();play=false;}
+if(!musicOn){
+music.play();
+musicOn=true;
+}else{
+music.pause();
+musicOn=false;
+}
 }
 
-/* METEOR */
-let meteorInterval=null;
+/* METEOR (FIX REAL ANIMATION) */
+const canvas=document.getElementById("meteor");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
 
-function startMeteor(){
-if(meteorInterval)return;
+let stars=[];
 
-meteorInterval=setInterval(()=>{
-if(mode!=="ultra")return;
-
-let m=document.getElementById("meteor");
-m.classList.add("active");
-setTimeout(()=>m.classList.remove("active"),400);
-
-},4000);
+for(let i=0;i<60;i++){
+stars.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+l:Math.random()*2
+});
 }
 
-function stopMeteor(){
-clearInterval(meteorInterval);
-meteorInterval=null;
+function drawMeteor(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+for(let s of stars){
+ctx.fillStyle="white";
+ctx.fillRect(s.x,s.y,s.l,s.l);
+s.y+=2;
+if(s.y>canvas.height)s.y=0;
 }
 
-/* WARP LINKS */
-function goTo(type){
+requestAnimationFrame(drawMeteor);
+}
+drawMeteor();
 
+/* WARP */
+function go(type){
 let link="";
-if(type==="wa")link="https://wa.me/6282241102321";
-if(type==="ig")link="https://instagram.com/too.dikaa";
-if(type==="tt")link="https://tiktok.com/@kayyneee";
+if(type==="wa") link="https://wa.me/6282241102321";
+if(type==="ig") link="https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv";
+if(type==="tt") link="https://tiktok.com/@kayyneee";
 
-const w=document.getElementById("warpScreen");
-w.classList.add("active");
+document.getElementById("warp").classList.add("active");
+document.getElementById("sfxWarp").play();
 
-setTimeout(()=>{
-w.classList.remove("active");
-window.location.href=link;
-},1200);
+setTimeout(()=>window.location.href=link,1200);
 }
 
-/* VOID MODE */
+/* VOICE AI */
+function voiceAI(){
+let msg=new SpeechSynthesisUtterance("Halo, ini Kaynne Origin OS aktif");
+speechSynthesis.speak(msg);
+}
+
+/* PROFILE EASTER EGG */
+let tap=0;
 document.getElementById("profile").onclick=()=>{
-
-tapVoid++;
-
-if(tapVoid>=5 && mode!=="void"){
-mode="void";
+tap++;
+if(tap===5){
 document.body.classList.add("glitch");
-document.body.classList.remove("low","ultra");
-stopMeteor();
-tapVoid=0;
-}
-
-else if(tapVoid>=5 && mode==="void"){
-mode="ultra";
-document.body.classList.remove("glitch");
-document.body.classList.add("ultra");
-startMeteor();
-tapVoid=0;
+alert("VOID MODE");
+tap=0;
 }
 };
-
-/* START */
-startMeteor();
 
 </script>
 

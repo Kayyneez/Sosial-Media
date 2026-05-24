@@ -231,6 +231,14 @@ cursor:pointer;
 
 <script>
 
+/* REMOVE LOADER */
+window.addEventListener("load",()=>{
+setTimeout(()=>{
+let l=document.getElementById("loader");
+if(l) l.remove();
+},2000);
+});
+
 /* STATE */
 let ultraGraphic=false;
 let lowMode=true;

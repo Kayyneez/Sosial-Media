@@ -37,6 +37,35 @@ animation:glitch .2s infinite;
 100%{filter:hue-rotate(240deg) contrast(1.5);}
 }
 
+/* LOADER */
+#loader{
+position:fixed;
+inset:0;
+background:black;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:99999;
+color:white;
+gap:18px;
+}
+
+.portal{
+width:90px;
+height:90px;
+border-radius:50%;
+border:3px solid cyan;
+border-top:3px solid magenta;
+border-right:3px solid white;
+animation:spin 1s linear infinite;
+box-shadow:0 0 20px cyan;
+}
+
+@keyframes spin{
+to{transform:rotate(360deg);}
+}
+  
 /* SPACE */
 .space{
 position:fixed;
@@ -48,6 +77,17 @@ radial-gradient(circle at 50% 50%,#6a00ff22,transparent 60%);
 filter:blur(25px);
 }
 
+/* GALAXY */
+.space{
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at 20% 30%,#ff00aa33,transparent 40%),
+radial-gradient(circle at 70% 60%,#00ffff33,transparent 40%),
+radial-gradient(circle at 50% 50%,#6a00ff22,transparent 60%);
+filter:blur(25px);
+}
+  
 /* STARS */
 .stars{
 position:fixed;
@@ -76,6 +116,20 @@ backdrop-filter:blur(12px);
 border-radius:20px;
 }
 
+/* PROFILE */
+.container{
+position:absolute;
+top:50%;left:50%;
+transform:translate(-50%,-50%);
+width:320px;
+padding:20px;
+text-align:center;
+color:white;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(12px);
+border-radius:20px;
+}
+
 .profile{
 width:90px;
 height:90px;
@@ -83,6 +137,17 @@ border-radius:50%;
 border:3px solid cyan;
 box-shadow:0 0 20px cyan;
 margin-bottom:10px;
+}
+
+/* LINKS */
+.link{
+display:block;
+margin:10px 0;
+padding:12px;
+border-radius:999px;
+background:rgba(255,255,255,0.08);
+color:white;
+text-decoration:none;
 }
 
 /* METEOR */

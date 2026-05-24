@@ -227,6 +227,10 @@ startMeteor();
 alert("⚡ GRAPHIC ON");
 }else{
 document.body.classList.remove("ultra");
+
+/* 🔥 TAMBAHAN INI */
+stopMeteor();
+
 alert("⚡ GRAPHIC OFF");
 }
 }
@@ -258,19 +262,29 @@ play=false;
 }
 }
 
-/* METEOR (ONLY IF GRAPHIC ON) */
-function startMeteor(){
+/* set meteor */
+let meteorInterval = null;
 
-setInterval(()=>{
+function startMeteor(){
+if(meteorInterval) return;
+
+meteorInterval = setInterval(()=>{
 
 if(!ultraGraphic) return;
 
-let m=document.getElementById("meteor");
+let m = document.getElementById("meteor");
 m.classList.add("active");
 
-setTimeout(()=>m.classList.remove("active"),400);
+setTimeout(()=>{
+m.classList.remove("active");
+},400);
 
 },4000);
+}
+
+function stopMeteor(){
+clearInterval(meteorInterval);
+meteorInterval = null;
 }
 
 /* 🥚 PROFILE 5x = VOID */

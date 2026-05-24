@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kaynne Origin Os</title>
+<title>Kaynne Origin OS</title>
 
 <style>
 
@@ -112,7 +112,7 @@ border-radius:999px;
 background:rgba(255,255,255,0.08);
 color:white;
 text-decoration:none;
-cursor:pointer; /* <-- TAMBAHAN INI */
+cursor:pointer;
 transition:.2s;
 }
 
@@ -123,14 +123,14 @@ background:rgba(0,255,255,0.15);
 
 /* METEOR */
 .meteor{
-position:fixed;
-inset:0;
+position:fixed;inset:0;
 background:radial-gradient(circle,orange,transparent);
 opacity:0;
 pointer-events:none;
 }
 
 .meteor.active{animation:boom .4s;}
+
 @keyframes boom{50%{opacity:1;}}
 
 /* BUTTONS */
@@ -153,10 +153,9 @@ color:white;
 cursor:pointer;
 }
 
-/* WARP SCREEN */
+/* WARP */
 #warpScreen{
-position:fixed;
-inset:0;
+position:fixed;inset:0;
 background:black;
 display:flex;
 justify-content:center;
@@ -228,7 +227,6 @@ box-shadow:0 0 30px cyan;
 
 <script>
 
-/* STATE */
 let mode="ultra";
 let tapVoid=0;
 
@@ -237,6 +235,8 @@ function setUltra(){
 mode="ultra";
 document.body.classList.add("ultra");
 document.body.classList.remove("low","glitch");
+
+stopMeteor();
 startMeteor();
 }
 
@@ -245,6 +245,7 @@ function setLow(){
 mode="low";
 document.body.classList.add("low");
 document.body.classList.remove("ultra","glitch");
+
 stopMeteor();
 }
 
@@ -282,11 +283,10 @@ clearInterval(meteorInterval);
 meteorInterval=null;
 }
 
-/* WARP TRANSITION LINK */
+/* WARP LINK */
 function goTo(type){
 
 let link="";
-
 if(type==="wa") link="https://wa.me/6282241102321";
 if(type==="ig") link="https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv";
 if(type==="tt") link="https://tiktok.com/@kayyneee";
@@ -295,17 +295,17 @@ let warp=document.getElementById("warpScreen");
 warp.classList.add("active");
 
 setTimeout(()=>{
+warp.classList.remove("active");
 window.location.href=link;
 },1200);
-
 }
 
-/* VOID MODE (5 TAP PROFILE) */
+/* VOID MODE FIX */
 document.getElementById("profile").onclick=()=>{
 
 tapVoid++;
 
-if(tapVoid===5 && mode!=="void"){
+if(tapVoid>=5 && mode!=="void"){
 mode="void";
 document.body.classList.add("glitch");
 document.body.classList.remove("low","ultra");
@@ -314,7 +314,7 @@ alert("🌀 VOID MODE");
 tapVoid=0;
 }
 
-else if(tapVoid===5 && mode==="void"){
+else if(tapVoid>=5 && mode==="void"){
 mode="ultra";
 document.body.classList.remove("glitch");
 document.body.classList.add("ultra");
@@ -322,7 +322,6 @@ startMeteor();
 alert("🌌 BACK TO NORMAL");
 tapVoid=0;
 }
-
 };
 
 /* START */

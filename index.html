@@ -1,298 +1,389 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programmed Love - Botol Yakult</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaynne Origin OS</title>
 
-        body {
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-        }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
 
-        /* --- ANIMASI LOADER (LOADING SCREEN) --- */
-        #loader-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: #000;
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.8s ease, visibility 0.8s;
-        }
+body{
+height:100vh;
+overflow:hidden;
+background:black;
+transition:.3s;
+}
 
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #333;
-            border-top: 5px solid #ff4d6d;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
+/* MODE */
+body.low{filter:brightness(.7) contrast(.9);}
+body.ultra{filter:brightness(1.2) contrast(1.2);}
+body.glitch{animation:glitch .2s infinite;}
 
-        .loading-text {
-            color: #ffffff;
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            animation: pulse 1.5s infinite alternate;
-        }
+@keyframes glitch{
+0%{filter:hue-rotate(0deg) contrast(1.5);}
+50%{filter:hue-rotate(120deg) contrast(2);}
+100%{filter:hue-rotate(240deg) contrast(1.5);}
+}
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+/* LOADER */
+#loader{
+position:fixed;inset:0;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:99999;
+color:white;
+gap:10px;
+}
 
-        /* --- HALAMAN KLIK AWAL --- */
-        #welcome-page {
-            position: absolute;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 1s ease, visibility 1s;
-        }
+.portal{
+width:90px;height:90px;
+border-radius:50%;
+border:3px solid cyan;
+border-top:3px solid magenta;
+animation:spin 1s linear infinite;
+box-shadow:0 0 20px cyan;
+}
 
-        #welcome-page.show {
-            opacity: 1;
-            visibility: visible;
-        }
+@keyframes spin{to{transform:rotate(360deg);}}
 
-        #welcome-page.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
+/* SPACE */
+.space,.stars{
+position:fixed;inset:0;
+}
 
-        .click-btn {
-            background: none;
-            border: 2px solid #ff4d6d;
-            color: #ff4d6d;
-            padding: 15px 30px;
-            font-size: 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(255, 77, 109, 0.3);
-        }
+.space{
+background:
+radial-gradient(circle at 20% 30%,#ff00aa33,transparent 40%),
+radial-gradient(circle at 70% 60%,#00ffff33,transparent 40%),
+radial-gradient(circle at 50% 50%,#6a00ff22,transparent 60%);
+filter:blur(25px);
+}
 
-        .click-btn:hover {
-            background-color: #ff4d6d;
-            color: #000;
-            box-shadow: 0 0 25px rgba(255, 77, 109, 0.8);
-            transform: scale(1.05);
-        }
+.stars{
+background:radial-gradient(2px 2px at 20px 30px,#fff,transparent);
+background-size:300px 300px;
+animation:move 120s linear infinite;
+opacity:.4;
+}
 
-        .heart-icon {
-            font-size: 3rem;
-            margin-top: 20px;
-            animation: pulse 1.2s infinite;
-        }
+@keyframes move{to{transform:translateY(-1200px);}}
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
+/* UI */
+.container{
+position:absolute;
+top:50%;left:50%;
+transform:translate(-50%,-50%);
+width:320px;
+padding:20px;
+text-align:center;
+color:white;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(12px);
+border-radius:20px;
+}
 
-        /* --- KONTEN UTAMA --- */
-        #heart-container {
-            position: relative;
-            width: 600px;
-            height: 600px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 1s ease-in;
-        }
+.profile{
+width:90px;height:90px;
+border-radius:50%;
+border:3px solid cyan;
+box-shadow:0 0 20px cyan;
+margin-bottom:10px;
+cursor:pointer;
+}
 
-        #heart-container.show {
-            opacity: 1;
-        }
+.link{
+display:block;
+margin:10px 0;
+padding:12px;
+border-radius:999px;
+background:rgba(255,255,255,0.08);
+color:white;
+text-decoration:none;
+cursor:pointer;
+transition:.2s;
+}
+.link:hover{transform:scale(1.05);}
 
-        /* Teks Nama di Tengah */
-        .center-name {
-            position: absolute;
-            color: #ffffff;
-            font-size: 1.8rem;
-            font-weight: bold;
-            text-shadow: 0 0 15px #ff4d6d, 0 0 30px #ff4d6d;
-            z-index: 5;
-            text-align: center;
-            font-family: 'Courier New', Courier, monospace;
-            animation: name-glow 2s infinite alternate;
-        }
+/* STATUS */
+#status{
+margin-top:10px;
+font-size:12px;
+opacity:.7;
+}
 
-        @keyframes name-glow {
-            0% { transform: scale(0.95); text-shadow: 0 0 10px #ff4d6d; }
-            100% { transform: scale(1.05); text-shadow: 0 0 25px #ff4d6d, 0 0 40px #ff53d9; }
-        }
+/* WARP */
+#warp{
+position:fixed;inset:0;
+background:black;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:99999;
+opacity:0;
+pointer-events:none;
+transition:.3s;
+}
 
-        /* Teks "I Love You" Berjalan */
-        .i_love_word {
-            color: #ead6be;
-            font-size: 1.1rem;
-            position: absolute;
-            text-shadow: 0 0 8px #ff53d9;
-            white-space: nowrap;
-            opacity: 0;
-            animation: follow-path 5s infinite linear;
-        }
+#warp.active{
+opacity:1;
+pointer-events:auto;
+}
 
-        @keyframes follow-path {
-            0% {
-                opacity: 0;
-                transform: translate(var(--x0), var(--y0)) scale(0.6);
-            }
-            4% {
-                opacity: 1;
-            }
-            85% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: translate(var(--x1), var(--y1)) scale(0.6);
-            }
-        }
-    </style>
+.warpPortal{
+width:120px;
+height:120px;
+border-radius:50%;
+border:3px solid cyan;
+border-top:3px solid magenta;
+animation:spin .5s linear infinite;
+box-shadow:0 0 40px cyan;
+}
+
+#warpText{
+color:white;
+margin-top:15px;
+font-size:14px;
+opacity:.8;
+}
+
+/* BUTTON */
+.bottomBar{
+position:fixed;
+bottom:15px;
+left:50%;
+transform:translateX(-50%);
+display:flex;
+gap:10px;
+}
+
+.btn{
+padding:10px 14px;
+border-radius:999px;
+border:none;
+background:#111;
+color:white;
+cursor:pointer;
+}
+
+/* TOAST */
+#toast{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(0,0,0,0.7);
+color:white;
+padding:10px 18px;
+border-radius:999px;
+font-size:14px;
+opacity:0;
+transition:.3s;
+z-index:999999;
+}
+
+#toast.show{
+opacity:1;
+transform:translateX(-50%) translateY(10px);
+}
+
+/* FLASH */
+#flash{
+position:fixed;
+inset:0;
+background:white;
+opacity:0;
+pointer-events:none;
+z-index:999998;
+transition:.2s;
+}
+
+#flash.active{
+opacity:.4;
+}
+</style>
 </head>
-<body>
 
-    <div id="loader-container">
-        <div class="spinner"></div>
-        <div class="loading-text">Memuat...</div>
-    </div>
+<body class="ultra">
 
-    <audio id="backsound" src="audio.mp3" loop></audio>
+<!-- LOADER -->
+<div id="loader">
+<div class="portal"></div>
+<div>sabarr yah azril...</div>
+</div>
 
-    <div id="welcome-page">
-        <button class="click-btn" onclick="startLoveAnimation()">Coba Klik</button>
-    </div>
+<!-- WARP -->
+<div id="warp">
+<div class="warpPortal"></div>
+<div id="warpText">bentar wok...</div>
+</div>
 
-    <div id="heart-container">
-        <div class="center-name" id="center-text" style="display: none;">Botol Yakult</div>
-    </div>
+<div class="space"></div>
+<div class="stars"></div>
 
-    <script>
-        let isMusicPlaying = false; // Penanda status musik
+<div class="container">
 
-        // Efek Loader Menghilang setelah 2.5 detik
-        setTimeout(() => {
-            const loader = document.getElementById('loader-container');
-            const welcomePage = document.getElementById('welcome-page');
-            
-            loader.style.opacity = '0';
-            loader.style.visibility = 'hidden';
-            welcomePage.classList.add('show');
-        }, 2500);
+<img src="profile.jpg" class="profile" id="profile">
+<h2>@Kaynne</h2>
 
-        // Rumus matematika bentuk hati
-        function getHeartPoint(t) {
-            const x = 16 * Math.pow(Math.sin(t), 3);
-            const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
-            return { x: x * 13, y: y * 13 };
-        }
+<div id="status">⚡ ULTRA GRAPHIC ACTIVE</div>
 
-        function startLoveAnimation() {
-            const audio = document.getElementById('backsound');
-            audio.play().then(() => {
-                isMusicPlaying = true; // Set ke true jika musik berhasil diputar
-            }).catch(error => {
-                console.log("Audio gagal berputar:", error);
-            });
+<a class="link" onclick="go('wa')">Wangsaff Gua</a>
+<a class="link" onclick="go('ig')">IG Gua</a>
+<a class="link" onclick="go('tt')"> My Tiktok</a>
 
-            document.getElementById('welcome-page').classList.remove('show');
-            document.getElementById('welcome-page').classList.add('hidden');
-            
-            const container = document.getElementById('heart-container');
-            container.classList.add('show');
-            document.getElementById('center-text').style.display = 'block';
+<button class="btn" onclick="voiceAI()">🎤 Voice AI</button>
 
-            const totalWords = 60; 
-            const baseDuration = 5; 
+</div>
 
-            for (let i = 0; i < totalWords; i++) {
-                const word = document.createElement('div');
-                word.className = 'i_love_word';
-                word.innerText = 'I love you';
+<div class="bottomBar">
+<button class="btn" onclick="setUltra()">ULTRA</button>
+<button class="btn" onclick="setLow()">LOW</button>
+<button class="btn" onclick="toggleMusic()">🎵</button>
+</div>
 
-                const startPos = getHeartPoint(0);
-                word.style.setProperty('--x0', `${startPos.x}px`);
-                word.style.setProperty('--y0', `${startPos.y}px`);
+<div id="toast"></div>
+<div id="flash"></div>
 
-                const endPos = getHeartPoint(2 * Math.PI);
-                word.style.setProperty('--x1', `${endPos.x}px`);
-                word.style.setProperty('--y1', `${endPos.y}px`);
+<audio id="music" loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+</audio>
 
-                let keyframes = `@keyframes path-${i} {`;
-                const steps = 20; 
-                
-                for (let j = 0; j <= steps; j++) {
-                    const pct = j / steps;
-                    const t = pct * 2 * Math.PI; 
-                    const currentPos = getHeartPoint(t);
-                    
-                    let opacity = 1;
-                    if (pct < 0.05) opacity = pct / 0.05;
-                    if (pct > 0.90) opacity = (1 - pct) / 0.10;
+<audio id="sfxWarp" src="https://actions.google.com/sounds/v1/transportation/airplane_takeoff.ogg"></audio>
+<audio id="sfxMode" src="https://actions.google.com/sounds/v1/ui/power_up.ogg"></audio>
 
-                    keyframes += `
-                        ${pct * 100}% {
-                            opacity: ${opacity};
-                            transform: translate(${currentPos.x}px, ${currentPos.y}px);
-                        }
-                    `;
-                }
-                keyframes += `}`;
+<script>
 
-                const style = document.createElement('style');
-                style.innerHTML = keyframes;
-                document.head.appendChild(style);
+/* LOADER FIX */
+window.addEventListener("load", () => {
+setTimeout(() => {
+let loader = document.getElementById("loader");
+if(loader){
+loader.style.opacity="0";
+setTimeout(()=>loader.remove(),500);
+}
+},1200);
+});
 
-                word.style.animation = `path-${i} ${baseDuration}s infinite linear`;
-                word.style.animationDelay = `${(i / totalWords) * baseDuration}s`;
+/* STATE */
+let mode="ultra";
+let tapProfile=0;
+let isVoid=false;
 
-                container.appendChild(word);
-            }
-        }
+/* TOAST */
+function showToast(text){
+let t=document.getElementById("toast");
+t.innerText=text;
+t.classList.add("show");
+setTimeout(()=>t.classList.remove("show"),1200);
+}
 
-        /* --- FITUR AUTO MUTE SAAT MENINGGALKAN WEB --- */
-        document.addEventListener('visibilitychange', function() {
-            const audio = document.getElementById('backsound');
-            
-            if (document.hidden) {
-                // Jika user pindah tab, buka aplikasi lain, atau meminimalkan browser
-                audio.pause();
-            } else {
-                // Jika user kembali ke halaman web ini
-                if (isMusicPlaying) {
-                    audio.play().catch(err => console.log(err));
-                }
-            }
-        });
-    </script>
+/* FLASH */
+function flash(){
+let f=document.getElementById("flash");
+f.classList.add("active");
+setTimeout(()=>f.classList.remove("active"),150);
+}
+
+/* ULTRA */
+function setUltra(){
+mode="ultra";
+document.body.classList.remove("low","glitch");
+document.body.classList.add("ultra");
+
+document.getElementById("status").innerText="⚡ ULTRA ACTIVE";
+showToast("ULTRA ON");
+document.getElementById("sfxMode").play().catch(()=>{});
+flash();
+}
+
+/* LOW */
+function setLow(){
+mode="low";
+document.body.classList.remove("ultra","glitch");
+document.body.classList.add("low");
+
+document.getElementById("status").innerText="LOW ACTIVE";
+showToast("LOW ON");
+document.getElementById("sfxMode").play().catch(()=>{});
+flash();
+}
+
+/* MUSIC */
+let music=document.getElementById("music");
+let on=false;
+
+function toggleMusic(){
+if(!on){music.play();on=true;}
+else{music.pause();on=false;}
+}
+
+/* WARP */
+function go(type){
+let link="";
+if(type==="wa") link="https://wa.me/6282241102321";
+if(type==="ig") link="https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv";
+if(type==="tt") link="https://tiktok.com/@kayyneee";
+
+document.getElementById("warp").classList.add("active");
+document.getElementById("sfxWarp").play().catch(()=>{});
+
+setTimeout(()=>window.location.href=link,1200);
+}
+
+/* VOICE AI */
+function voiceAI(){
+let msg=new SpeechSynthesisUtterance("Welcome to my media sosial");
+speechSynthesis.speak(msg);
+}
+
+/* VOID MODE */
+document.getElementById("profile").onclick=()=>{
+
+tapProfile++;
+
+if(tapProfile>=5 && !isVoid){
+isVoid=true;
+tapProfile=0;
+mode="void";
+
+document.body.classList.add("glitch");
+document.body.classList.remove("ultra","low");
+
+showToast("VOID MODE ON");
+return;
+}
+
+if(tapProfile>=5 && isVoid){
+isVoid=false;
+tapProfile=0;
+mode="ultra";
+
+document.body.classList.remove("glitch");
+document.body.classList.add("ultra");
+
+showToast("BACK TO NORMAL");
+return;
+}
+};
+
+/* 🔥 FIX WARP STUCK (INI YANG KAMU MAU) */
+function resetWarp(){
+document.getElementById("warp").classList.remove("active");
+}
+
+document.addEventListener("visibilitychange", () => {
+if(!document.hidden) resetWarp();
+});
+
+window.addEventListener("focus", resetWarp);
+window.addEventListener("pageshow", resetWarp);
+
+</script>
+
 </body>
 </html>

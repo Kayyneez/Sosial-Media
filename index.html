@@ -329,6 +329,78 @@ document.getElementById("warp").classList.add("active");
 document.getElementById("sfxWarp").play();
 
 setTimeout(()=>window.location.href=link,1200);
+
+/* LOADER */
+window.addEventListener("load",()=>{
+setTimeout(()=>{
+document.getElementById("loader").remove();
+},1200);
+});
+
+/* MODE STATE */
+let mode = "ultra";
+let tapProfile = 0;
+let isVoid = false;
+
+/* TOAST */
+function showToast(text){
+let t=document.getElementById("toast");
+t.innerText=text;
+t.classList.add("show");
+setTimeout(()=>t.classList.remove("show"),1200);
+}
+
+/* FLASH */
+function flash(){
+let f=document.getElementById("flash");
+f.classList.add("active");
+setTimeout(()=>f.classList.remove("active"),150);
+}
+
+/* ULTRA */
+function setUltra(){
+mode="ultra";
+document.body.classList.remove("low","glitch");
+document.body.classList.add("ultra");
+
+document.getElementById("status").innerText="⚡ ULTRA GRAPHIC ACTIVE";
+showToast("⚡ ULTRA ON");
+document.getElementById("sfxMode").play().catch(()=>{});
+flash();
+}
+
+/* LOW */
+function setLow(){
+mode="low";
+document.body.classList.remove("ultra","glitch");
+document.body.classList.add("low");
+
+document.getElementById("status").innerText="🪐 LOW MODE ACTIVE";
+showToast("🪐 LOW ON");
+document.getElementById("sfxMode").play().catch(()=>{});
+flash();
+}
+
+/* MUSIC */
+let music=document.getElementById("music");
+let on=false;
+
+function toggleMusic(){
+if(!on){music.play();on=true;}
+else{music.pause();on=false;}
+}
+
+/* WARP */
+function go(type){
+let link="";
+if(type==="wa") link="https://wa.me/6282241102321";
+if(type==="ig") link="https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv";
+if(type==="tt") link="https://tiktok.com/@kayyneee";
+
+document.getElementById("warp").classList.add("active");
+document.getElementById("sfxWarp").play().catch(()=>{});
+
+setTimeout(()=>window.location.href=link,1200);
 }
 
 /* VOICE AI */
@@ -337,10 +409,7 @@ let msg=new SpeechSynthesisUtterance("Welcome to my media sosial wok");
 speechSynthesis.speak(msg);
 }
 
-/* EASTER EGG */
-let tapProfile = 0;
-let isVoid = false;
-
+/* VOID MODE */
 document.getElementById("profile").onclick = () => {
 
 tapProfile++;
@@ -368,7 +437,6 @@ document.body.classList.add("ultra");
 showToast("⚡ BACK TO NORMAL");
 return;
 }
-
 };
 
 </script>

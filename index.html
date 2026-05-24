@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kayyne OS V8</title>
+<title>Kayyne Origin Os 6</title>
 
 <style>
 
@@ -20,9 +20,39 @@ transition:.4s;
 body.low{filter:brightness(.7) contrast(.9);}
 body.ultra{filter:brightness(1.15) contrast(1.2);}
 
-/* SPACE */
+/* LOADER */
+#loader{
+position:fixed;
+inset:0;
+background:black;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:99999;
+color:white;
+gap:18px;
+}
+
+.portal{
+width:90px;
+height:90px;
+border-radius:50%;
+border:3px solid cyan;
+border-top:3px solid magenta;
+border-right:3px solid white;
+animation:spin 1s linear infinite;
+box-shadow:0 0 20px cyan;
+}
+
+@keyframes spin{
+to{transform:rotate(360deg);}
+}
+
+/* GALAXY */
 .space{
-position:fixed;inset:0;
+position:fixed;
+inset:0;
 background:
 radial-gradient(circle at 20% 30%,#ff00aa33,transparent 40%),
 radial-gradient(circle at 70% 60%,#00ffff33,transparent 40%),
@@ -30,9 +60,9 @@ radial-gradient(circle at 50% 50%,#6a00ff22,transparent 60%);
 filter:blur(25px);
 }
 
-/* STARS */
 .stars{
-position:fixed;inset:0;
+position:fixed;
+inset:0;
 background:radial-gradient(2px 2px at 20px 30px,#fff,transparent);
 background-size:300px 300px;
 animation:move 120s linear infinite;
@@ -40,7 +70,7 @@ opacity:.4;
 }
 @keyframes move{to{transform:translateY(-1200px);}}
 
-/* UI */
+/* PROFILE */
 .container{
 position:absolute;
 top:50%;left:50%;
@@ -54,7 +84,6 @@ backdrop-filter:blur(12px);
 border-radius:20px;
 }
 
-/* PROFILE */
 .profile{
 width:90px;
 height:90px;
@@ -77,7 +106,8 @@ text-decoration:none;
 
 /* METEOR */
 .meteor{
-position:fixed;inset:0;
+position:fixed;
+inset:0;
 background:radial-gradient(circle,orange,transparent);
 opacity:0;
 pointer-events:none;
@@ -85,75 +115,26 @@ pointer-events:none;
 .meteor.active{animation:boom .4s;}
 @keyframes boom{50%{opacity:1;}}
 
-/* CMD */
-#cmd{
+/* BOTTOM BAR */
+.bottomBar{
 position:fixed;
-bottom:80px;
-left:20px;
-background:rgba(0,0,0,.85);
-color:#0ff;
-padding:10px;
-border-radius:10px;
-font-size:12px;
-display:none;
-width:240px;
-z-index:9999;
-}
-
-#cmdInput{
-width:100%;
-margin-top:5px;
-padding:6px;
-background:black;
-color:#0ff;
-border:none;
-outline:none;
-border-radius:6px;
-}
-
-/* 🔥 TOP BUTTONS */
-.topBtn{
-position:fixed;
-z-index:9999;
-border:none;
-cursor:pointer;
-}
-
-/* ROCKET CMD BUTTON (bunder kecil) */
-#rocketBtn{
-top:12px;
-right:12px;
-width:38px;
-height:38px;
-border-radius:50%;
-background:#111;
-color:white;
-box-shadow:0 0 10px cyan;
-font-size:16px;
-}
-
-/* SOUND BUTTON */
-#soundBtn{
-top:12px;
-left:12px;
-padding:8px 10px;
-border-radius:999px;
-background:#111;
-color:white;
-box-shadow:0 0 10px magenta;
-font-size:14px;
-}
-
-/* MODE TOGGLE */
-#modeBtn{
-bottom:20px;
+bottom:15px;
 left:50%;
 transform:translateX(-50%);
-padding:10px 15px;
+display:flex;
+gap:15px;
+z-index:9999;
+}
+
+.btn{
+border:none;
+padding:12px 16px;
 border-radius:999px;
+cursor:pointer;
+font-size:18px;
 background:#111;
 color:white;
-box-shadow:0 0 10px #00ffff;
+box-shadow:0 0 10px rgba(0,255,255,0.4);
 }
 
 </style>
@@ -161,204 +142,93 @@ box-shadow:0 0 10px #00ffff;
 
 <body class="ultra">
 
+<!-- LOADER -->
+<div id="loader">
+  <div class="portal"></div>
+  <h3>ENTERING GALAXY...</h3>
+</div>
+
+<!-- BACKGROUND -->
 <div class="space"></div>
 <div class="stars"></div>
-
 <div class="meteor" id="meteor"></div>
-
-<!-- TOP UI -->
-<button id="soundBtn" class="topBtn" onclick="toggleSound()">🎵</button>
-<button id="rocketBtn" class="topBtn" onclick="toggleCMD()">🚀</button>
 
 <!-- UI -->
 <div class="container">
 
-<img src="profile.jpg" class="profile" id="profile">
+<img src="profile.jpg" class="profile">
 
 <h2>@Kaynne</h2>
 
 <a class="link" href="https://wa.me/6282241102321">📞 My Wangsaff</a>
-<a class="link" href="https://instagram.com/too.dika">📸 My IG</a>
+<a class="link" href="https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv">📸 My IG</a>
 <a class="link" href="https://tiktok.com/@kayyneee">🔮 My TikTok</a>
 
 </div>
 
-<!-- MODE BUTTON -->
-<button id="modeBtn" onclick="toggleMode()">⚡ / 🪐</button>
+<!-- BOTTOM BUTTONS -->
+<div class="bottomBar">
 
-<!-- CMD -->
-<div id="cmd">
-<div id="cmdLog">CMD READY</div>
-<input id="cmdInput" placeholder="/help">
+<button class="btn" onclick="toggleMode()">⚡ / 🪐</button>
+<button class="btn" onclick="toggleMusic()">🎵</button>
+
 </div>
+
+<!-- AUDIO -->
+<audio id="music" loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+</audio>
 
 <script>
 
-/* AUDIO */
-const AudioEngine={
-ctx:new (window.AudioContext||window.webkitAudioContext)(),
-master:null,
-enabled:true,
-ambient:null,
-
-init(){
-this.master=this.ctx.createGain();
-this.master.gain.value=0.3;
-this.master.connect(this.ctx.destination);
-},
-
-unlock(){
-this.ctx.resume();
-this.startAmbient();
-},
-
-beep(f=440){
-if(!this.enabled) return;
-
-const o=this.ctx.createOscillator();
-const g=this.ctx.createGain();
-
-o.frequency.value=f;
-g.gain.value=0.25;
-
-o.connect(g);
-g.connect(this.master);
-
-o.start();
-o.stop(this.ctx.currentTime+0.2);
-},
-
-startAmbient(){
-if(this.ambient) return;
-
-const o=this.ctx.createOscillator();
-const g=this.ctx.createGain();
-
-o.frequency.value=55;
-g.gain.value=0.05;
-
-o.connect(g);
-g.connect(this.master);
-
-o.start();
-this.ambient=o;
-},
-
-stopAmbient(){
-if(this.ambient){
-this.ambient.stop();
-this.ambient=null;
-}
-},
-
-toggle(){
-this.enabled=!this.enabled;
-if(!this.enabled) this.stopAmbient();
-else this.startAmbient();
-}
-};
-
-AudioEngine.init();
-
-/* unlock audio */
-document.body.addEventListener("click",()=>AudioEngine.unlock(),{once:true});
+/* REMOVE LOADER */
+window.addEventListener("load",()=>{
+setTimeout(()=>{
+let l=document.getElementById("loader");
+if(l) l.remove();
+},2000);
+});
 
 /* MODE */
 function toggleMode(){
 if(document.body.classList.contains("ultra")){
 document.body.classList.remove("ultra");
 document.body.classList.add("low");
-AudioEngine.stopAmbient();
 }else{
 document.body.classList.add("ultra");
 document.body.classList.remove("low");
 startMeteor();
-AudioEngine.startAmbient();
 }
 }
 
-/* SOUND */
-function toggleSound(){
-AudioEngine.toggle();
+/* MUSIC */
+let music=document.getElementById("music");
+let play=false;
+
+function toggleMusic(){
+if(!play){
+music.play();
+play=true;
+}else{
+music.pause();
+play=false;
+}
 }
 
 /* METEOR */
 function startMeteor(){
-clearInterval(window.meteor);
-window.meteor=setInterval(()=>{
+setInterval(()=>{
 if(!document.body.classList.contains("ultra")) return;
-AudioEngine.beep(120);
+
 let m=document.getElementById("meteor");
 m.classList.add("active");
 setTimeout(()=>m.classList.remove("active"),400);
-},3500);
+
+},4000);
 }
-
-/* CMD */
-let open=false;
-const cmd=document.getElementById("cmd");
-const input=document.getElementById("cmdInput");
-const log=document.getElementById("cmdLog");
-
-function toggleCMD(){
-open=!open;
-cmd.style.display=open?"block":"none";
-if(open) input.focus();
-}
-
-input.addEventListener("keydown",(e)=>{
-if(e.key!=="Enter") return;
-
-let v=input.value.toLowerCase();
-input.value="";
-
-if(v==="/help") log.innerText="/ultra /low /sound /meteor /god";
-
-else if(v==="/ultra"){
-document.body.classList.add("ultra");
-document.body.classList.remove("low");
-AudioEngine.startAmbient();
-log.innerText="ULTRA ⚡";
-}
-
-else if(v==="/low"){
-document.body.classList.add("low");
-document.body.classList.remove("ultra");
-AudioEngine.stopAmbient();
-log.innerText="LOW 🪐";
-}
-
-else if(v==="/sound"){
-AudioEngine.toggle();
-log.innerText="SOUND 🎵";
-}
-
-else if(v==="/god"){
-document.body.style.filter="hue-rotate(180deg)";
-AudioEngine.beep(900);
-log.innerText="GOD MODE";
-}
-
-else{
-log.innerText="UNKNOWN";
-}
-});
-
-/* PROFILE EGG */
-let p=0;
-document.getElementById("profile").onclick=()=>{
-p++;
-if(p===5){
-AudioEngine.beep(900);
-alert("SECRET GOD MODE");
-}
-};
 
 /* START */
-setTimeout(()=>{
-AudioEngine.unlock();
 startMeteor();
-},2500);
 
 </script>
 

@@ -214,8 +214,8 @@ if(l) l.remove();
 });
 
 /* STATE */
-let ultraGraphic=true;
-let lowMode=false;
+let mode="ultra";
+let tapvoid=0;
 
 /* GRAPHIC TOGGLE */
 function toggleGraphic(){
@@ -224,14 +224,14 @@ ultraGraphic=!ultraGraphic;
 if(ultraGraphic){
 document.body.classList.add("ultra");
 startMeteor();
-alert("⚡ GRAPHIC ON");
+alert("GRAPIC ULTRA ON⚡");
 }else{
 document.body.classList.remove("ultra");
 
 /* 🔥 TAMBAHAN INI */
 stopMeteor();
 
-alert("⚡ GRAPHIC OFF");
+alert("GRAPIC ULTRA OFF⚡");
 }
 }
 
@@ -241,10 +241,10 @@ lowMode=!lowMode;
 
 if(lowMode){
 document.body.classList.add("low");
-alert("🪐 LOW ON");
+alert("GRAPIC LOW ON🪐");
 }else{
 document.body.classList.remove("low");
-alert("🪐 LOW OFF");
+alert("GRAPIC LOW OFF🪐");
 }
 }
 
@@ -291,12 +291,27 @@ meteorInterval = null;
 let p=0;
 
 document.getElementById("profile").onclick=()=>{
-p++;
 
-if(p===5){
-document.body.style.filter="invert(1)";
-alert("🪐 VOID MODE");
+tapVoid++;
+
+if(tapVoid===5 && mode!=="void"){
+mode="void";
+document.body.classList.add("glitch");
+document.body.classList.remove("low","ultra");
+stopMeteor();
+alert("🌀 VOID MODE");
+tapVoid=0;
 }
+
+else if(tapVoid===5 && mode==="void"){
+mode="ultra";
+document.body.classList.remove("glitch");
+document.body.classList.add("ultra");
+startMeteor();
+alert("🌌 BACK TO NORMAL (ULTRA)");
+tapVoid=0;
+}
+
 };
 
 /* 🥚 BACKGROUND TAP 10x = GLITCH */

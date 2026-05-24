@@ -31,9 +31,9 @@ body.glitch{animation:glitch .2s infinite;}
 position:fixed;inset:0;
 background:black;
 display:flex;
-flex-direction:column;
 justify-content:center;
 align-items:center;
+flex-direction:column;
 z-index:99999;
 color:white;
 }
@@ -116,7 +116,6 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 z-index:99999;
-
 opacity:0;
 pointer-events:none;
 transition:.3s;
@@ -180,7 +179,6 @@ pointer-events:none;
 opacity:1;
 transform:translateX(-50%) translateY(10px);
 }
-  
 </style>
 </head>
 
@@ -201,20 +199,17 @@ transform:translateX(-50%) translateY(10px);
 <!-- BACKGROUND -->
 <div class="space"></div>
 <div class="stars"></div>
-<canvas id="meteor"></canvas>
 
 <!-- UI -->
 <div class="container">
-
 <img src="profile.jpg" class="profile" id="profile">
 <h2>@Kaynne</h2>
 
-<a class="link" onclick="go('wa')">📞 My WhatsApp</a>
-<a class="link" onclick="go('ig')">📸 My Instagram</a>
-<a class="link" onclick="go('tt')">🔮 My TikTok</a>
+<a class="link" onclick="go('wa')">📞 WhatsApp</a>
+<a class="link" onclick="go('ig')">📸 Instagram</a>
+<a class="link" onclick="go('tt')">🔮 TikTok</a>
 
 <button class="btn" onclick="voiceAI()">🎤 Voice AI</button>
-
 </div>
 
 <!-- BUTTON -->
@@ -224,13 +219,15 @@ transform:translateX(-50%) translateY(10px);
 <button class="btn" onclick="toggleMusic()">🎵</button>
 </div>
 
+<!-- TOAST -->
+<div id="toast"></div>
+
 <!-- AUDIO -->
 <audio id="music" loop>
 <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
 </audio>
 
 <audio id="sfxWarp" src="https://actions.google.com/sounds/v1/transportation/airplane_takeoff.ogg"></audio>
-<audio id="sfxClick" src="https://actions.google.com/sounds/v1/ui/click.ogg"></audio>
 
 <script>
 
@@ -238,14 +235,13 @@ transform:translateX(-50%) translateY(10px);
 window.addEventListener("load",()=>{
 setTimeout(()=>{
 document.getElementById("loader").remove();
-startMeteor();
 },1500);
 });
 
 /* MODE */
 let mode="ultra";
 
-/*toast*/
+/* TOAST */
 function showToast(text){
 let t=document.getElementById("toast");
 t.innerText=text;
@@ -255,22 +251,20 @@ setTimeout(()=>{
 t.classList.remove("show");
 },1200);
 }
-  
+
 /* ULTRA */
 function setUltra(){
 mode="ultra";
-document.body.classList.add("ultra");
 document.body.classList.remove("low","glitch");
-
+document.body.classList.add("ultra");
 showToast("⚡ ULTRA GRAPHIC ON");
 }
 
 /* LOW */
 function setLow(){
 mode="low";
-document.body.classList.add("low");
 document.body.classList.remove("ultra","glitch");
-
+document.body.classList.add("low");
 showToast("🪐 LOW MODE ON");
 }
 
@@ -288,52 +282,24 @@ musicOn=false;
 }
 }
 
-/* METEOR (FIX REAL ANIMATION) */
-const canvas=document.getElementById("meteor");
-const ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-
-let stars=[];
-
-for(let i=0;i<60;i++){
-stars.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-l:Math.random()*2
-});
-}
-
-function drawMeteor(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-
-for(let s of stars){
-ctx.fillStyle="white";
-ctx.fillRect(s.x,s.y,s.l,s.l);
-s.y+=2;
-if(s.y>canvas.height)s.y=0;
-}
-
-requestAnimationFrame(drawMeteor);
-}
-drawMeteor();
-
 /* WARP */
 function go(type){
 let link="";
 if(type==="wa") link="https://wa.me/6282241102321";
-if(type==="ig") link="https://www.instagram.com/too.dikaa?igsh=bnAxczJ5ZGw0bGZv";
-if(type==="tt") link="https://tiktok.com/@kayyneee";
+if(type==="ig") link="https://instagram.com";
+if(type==="tt") link="https://tiktok.com";
 
 document.getElementById("warp").classList.add("active");
 document.getElementById("sfxWarp").play();
 
-setTimeout(()=>window.location.href=link,1200);
+setTimeout(()=>{
+window.location.href=link;
+},1200);
 }
 
 /* VOICE AI */
 function voiceAI(){
-let msg=new SpeechSynthesisUtterance("Welcome To My Media Sosial");
+let msg=new SpeechSynthesisUtterance("Welcome to Kaynne Origin OS");
 speechSynthesis.speak(msg);
 }
 
@@ -343,11 +309,10 @@ document.getElementById("profile").onclick=()=>{
 tap++;
 if(tap===5){
 document.body.classList.add("glitch");
-alert("VOID MODE");
+showToast("🌀 VOID MODE");
 tap=0;
 }
 };
-
 </script>
 
 </body>
